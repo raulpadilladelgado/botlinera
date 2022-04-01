@@ -1,11 +1,11 @@
-version: '3.8'
+version: '3.3'
 
 services:
-
   mongo:
     image: mongo
     ports:
       - "27017:27017"
+    container_name: botlinera_gas_station
     environment:
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: password

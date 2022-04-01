@@ -34,7 +34,6 @@ help:
 	echo "${MSG_IDENT}=======   🐳  DOCKER   =====================================\n"
 	echo "${MSG_IDENT}  ℹ️   To work with $(PROJECT_NAME) running alone in a container"
 	echo "${MSG_IDENT}  ⚠️   Requirements : docker \n"
-	echo "${MSG_IDENT}  dk-build                -  📦  Build a docker image with the .jar"
 	echo "${MSG_IDENT}  up                      -  🚀  Start container"
 	echo "${MSG_IDENT}  down                    -  🛑  Stop container"
 	echo "${MSG_IDENT}  restart                 -  ♻️  Rebuild the application and launch app"
@@ -60,16 +59,6 @@ run: clean
 ########################   🐳 DOCKER    ##############################
 ######################################################################
 
-dk-build: test
-	echo "\n\n${MSG_SEPARATOR}\n\n 🐳 dk-build => Building the docker dev environment ...\n\n${MSG_SEPARATOR}\n\n"
-
-	docker-compose -f docker/docker-compose.dev.yml build  --force-rm
-
-dk-build-SkipTest:
-	echo "\n\n${MSG_SEPARATOR}\n\n 🐳 dk-build - ${RED}skip tests${NO_COLOUR} => Building the docker image with name ${DOCKER_IMAGE_NAME} ...\n\n${MSG_SEPARATOR}\n\n"
-
-	docker-compose -f docker/docker-compose.dev.yml build  --force-rm
-
 up:
 	echo "\n\n${MSG_SEPARATOR}\n\n 🐳 up => 🚀  Start container \n\n${MSG_SEPARATOR}\n\n"
 
@@ -80,4 +69,4 @@ down:
 
 	-docker-compose -f docker/docker-compose.dev.yml down --remove-orphans
 
-restart: down dk-build-SkipTest up
+restart: down up
