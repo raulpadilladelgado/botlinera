@@ -36,6 +36,9 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
     testImplementation("io.mockk:mockk:1.9.3")
+
+    testImplementation("org.mockito:mockito-core:4.4.0")
+
 }
 
 application {
