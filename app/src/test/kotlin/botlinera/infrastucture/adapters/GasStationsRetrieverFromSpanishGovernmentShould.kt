@@ -9,7 +9,6 @@ import org.mockito.Mockito.*
 private const val GAS_STATIONS_SOURCE = "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
 
 class GasStationsRetrieverFromSpanishGovernmentShould {
-    //TODO define a "real" expected result
     @Test
     fun getInfoForAllGasStations () {
         val requester: URLWrapper = mock(URLWrapper::class.java)
