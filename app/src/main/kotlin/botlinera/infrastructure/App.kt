@@ -3,6 +3,8 @@
  */
 package botlinera.infrastructure
 
+import botlinera.infrastucture.adapters.GastStationPersisterMongo
+
 class App {
     val greeting: String
         get() {
@@ -12,4 +14,5 @@ class App {
 
 fun main() {
     println(App().greeting)
+    GastStationPersisterMongo().save("")
 }
