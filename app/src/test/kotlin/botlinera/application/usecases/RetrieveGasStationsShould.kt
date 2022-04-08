@@ -1,19 +1,15 @@
 package botlinera.application.usecases
 
 import botlinera.application.ports.GasStationsRetriever
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import org.mockito.Mockito.*
 import kotlin.test.Test
-
 
 
 class RetrieveGasStationsShould {
     @Test fun getInfoForAllGasStations () {
-        val fakeGasStationsRetriever = mockk<GasStationsRetriever>()
-        every { fakeGasStationsRetriever.apply() } returns ""
+        val fakeGasStationsRetriever = mock(GasStationsRetriever::class.java)
         val retrieveGasStations = RetrieveGasStations(fakeGasStationsRetriever)
         retrieveGasStations.execute()
-        verify { fakeGasStationsRetriever.apply() }
+        verify (fakeGasStationsRetriever, times(1)).apply()
     }
 }

@@ -3,19 +3,18 @@ package botlinera.infrastucture.adapters
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.utils.URLWrapper
 import org.junit.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
-import kotlin.test.assertEquals
+import org.mockito.Mockito.*
 
+
+private const val GAS_STATIONS_SOURCE = "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
 
 class GasStationsRetrieverFromSpanishGovernmentShould {
     //TODO define a "real" expected result
     @Test
     fun getInfoForAllGasStations () {
         val requester: URLWrapper = mock(URLWrapper::class.java)
-        `when`(requester.get("some official source")).thenReturn("")
         val gasStationsRetrieverFromSpanishGovernment = GasStationsRetrieverFromSpanishGovernment(requester)
-        val result = gasStationsRetrieverFromSpanishGovernment.apply()
-        assertEquals("", result)
+        gasStationsRetrieverFromSpanishGovernment.apply()
+        verify(requester, times(1)).get(GAS_STATIONS_SOURCE)
     }
 }
