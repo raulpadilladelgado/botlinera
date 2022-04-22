@@ -1,7 +1,8 @@
 package botlinera.infrastucture.adapters
 
+import botlinera.domain.fixtures.GasStationFixtures
+import botlinera.domain.fixtures.GasStationFixtures.Companion.gasStation
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
-import botlinera.infrastructure.dtos.GasStation
 import botlinera.infrastructure.utils.URLWrapper
 import org.junit.Test
 import org.mockito.Mockito.*
@@ -20,24 +21,7 @@ class GasStationsRetrieverFromSpanishGovernmentShould {
         val gasStationsRetrieverFromSpanishGovernment = GasStationsRetrieverFromSpanishGovernment(requester)
         var gasStationsInfo = gasStationsRetrieverFromSpanishGovernment.apply()
 
-        assertEquals(gasStationExpected(), gasStationsInfo)
+        assertEquals(gasStation(), gasStationsInfo)
     }
 
-    private fun gasStationExpected() = listOf(
-        GasStation(
-            "02250",
-            "AVENIDA CASTILLA LA MANCHA, 26",
-            "L-D: 07:00-22:00",
-            "39,211417",
-            "ABENGIBRE",
-            "-1,539167",
-            "Abengibre",
-            "",
-            "1,759",
-            "",
-            "",
-            "",
-            "ALBACETE"
-        )
-    )
 }

@@ -6,7 +6,7 @@ import org.litote.kmongo.*
 
 
 class GastStationPersisterMongo : GastStationPersister {
-    override fun save(gasStationsInfo: ArrayList<GasStation>) {
+    override fun save(gasStationsInfo: List<GasStation>) {
         val client = KMongo
             .createClient("mongodb://user:password@localhost:27017/botlinera?authSource=admin&ssl=false")
         val database = client.getDatabase("botlinera")
