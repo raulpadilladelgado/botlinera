@@ -14,6 +14,7 @@ dependencies {
     implementation("org.litote.kmongo:kmongo:4.5.1")
     implementation("org.slf4j:slf4j-api:1.7.36")
     implementation("org.slf4j:slf4j-simple:1.7.36")
+    implementation("com.google.code.gson:gson:2.9.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("io.mockk:mockk:1.9.3")

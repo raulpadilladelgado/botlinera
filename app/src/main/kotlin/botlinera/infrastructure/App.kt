@@ -3,6 +3,9 @@
  */
 package botlinera.infrastructure
 
+import botlinera.application.usecases.RetrieveGasStations
+import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
+import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
 
 class App {
@@ -14,5 +17,5 @@ class App {
 
 fun main() {
     println(App().greeting)
-    GastStationPersisterMongo().save("")
+    RetrieveGasStations(GasStationsRetrieverFromSpanishGovernment(URLWrapper()),GastStationPersisterMongo()).execute()
 }

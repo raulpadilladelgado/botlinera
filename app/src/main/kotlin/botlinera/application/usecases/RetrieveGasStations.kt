@@ -5,7 +5,7 @@ import botlinera.application.ports.GastStationPersister
 
 class RetrieveGasStations(
     private val gasStationsRetriever: GasStationsRetriever,
-    private val gasStationPersister: GastStationPersister
+    private val gasStationPersister: GastStationPersister,
 ) {
     fun execute() {
         val gasStationsInfo = gasStationsRetriever.apply()

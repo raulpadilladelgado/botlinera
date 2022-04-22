@@ -1,0 +1,41 @@
+{
+  "Fecha": "10/04/2022 20:25:10",
+  "ListaEESSPrecio": [
+    {
+      "C.P.": "02250",
+      "Dirección": "AVENIDA CASTILLA LA MANCHA, 26",
+      "Horario": "L-D: 07:00-22:00",
+      "Latitud": "39,211417",
+      "Localidad": "ABENGIBRE",
+      "Longitud (WGS84)": "-1,539167",
+      "Margen": "D",
+      "Municipio": "Abengibre",
+      "Precio Biodiesel": "",
+      "Precio Bioetanol": "",
+      "Precio Gas Natural Comprimido": "",
+      "Precio Gas Natural Licuado": "",
+      "Precio Gases licuados del petróleo": "",
+      "Precio Gasoleo A": "1,779",
+      "Precio Gasoleo B": "1,270",
+      "Precio Gasoleo Premium": "",
+      "Precio Gasolina 95 E10": "",
+      "Precio Gasolina 95 E5": "1,759",
+      "Precio Gasolina 95 E5 Premium": "",
+      "Precio Gasolina 98 E10": "",
+      "Precio Gasolina 98 E5": "",
+      "Precio Hidrogeno": "",
+      "Provincia": "ALBACETE",
+      "Remisión": "dm",
+      "Rótulo": "Nº 10.935",
+      "Tipo Venta": "P",
+      "% BioEtanol": "0,0",
+      "% Éster metílico": "0,0",
+      "IDEESS": "4375",
+      "IDMunicipio": "52",
+      "IDProvincia": "02",
+      "IDCCAA": "07"
+    }
+    ],
+    "Nota": "Archivo de todos los productos en todas las estaciones de servicio. La actualización de precios se realiza cada media hora, con los precios en vigor en ese momento.",
+     "ResultadoConsulta": "OK"
+    }
