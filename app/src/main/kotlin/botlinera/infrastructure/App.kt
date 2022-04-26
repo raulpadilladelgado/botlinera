@@ -8,14 +8,7 @@ import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernme
 import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
-
 fun main() {
-    println(App().greeting)
-    RetrieveGasStations(GasStationsRetrieverFromSpanishGovernment(URLWrapper()),GastStationPersisterMongo()).execute()
+    println("Botlinera is now working!")
+    RetrieveGasStations(GasStationsRetrieverFromSpanishGovernment(URLWrapper()), GastStationPersisterMongo()).execute()
 }

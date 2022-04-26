@@ -1,6 +1,5 @@
 package botlinera.infrastucture.adapters
 
-import botlinera.domain.fixtures.GasStationFixtures
 import botlinera.domain.fixtures.GasStationFixtures.Companion.gasStation
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.utils.URLWrapper
@@ -17,11 +16,8 @@ class GasStationsRetrieverFromSpanishGovernmentShould {
         val requester: URLWrapper = mock(URLWrapper::class.java)
         val file = javaClass.getResource(EXPECTED_GAS_STATION_JSON)?.readText()
         `when`(requester.get(anyString())).thenReturn(file)
-
         val gasStationsRetrieverFromSpanishGovernment = GasStationsRetrieverFromSpanishGovernment(requester)
         var gasStationsInfo = gasStationsRetrieverFromSpanishGovernment.apply()
-
         assertEquals(gasStation(), gasStationsInfo)
     }
-
 }
