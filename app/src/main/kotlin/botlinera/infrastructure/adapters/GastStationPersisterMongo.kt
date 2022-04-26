@@ -8,10 +8,9 @@ import org.litote.kmongo.*
 class GastStationPersisterMongo : GastStationPersister {
     override fun save(gasStationsInfo: List<GasStation>) {
         val client = KMongo
-            .createClient("mongodb://user:password@localhost:27017/botlinera?authSource=admin&ssl=false")
+            .createClient(System.getenv("DATABASE_URL"))
         val database = client.getDatabase("botlinera")
         val col = database.getCollection<GasStation>()
         col.insertMany(gasStationsInfo)
-//        val gasStation = col.findOne(GasStation:: eq "raul_gasofa")
     }
 }

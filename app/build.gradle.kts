@@ -22,5 +22,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("botlinera.AppKt")
+    mainClass.set("botlinera.infrastructure.AppKt")
 }

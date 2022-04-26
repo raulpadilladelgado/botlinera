@@ -3,7 +3,6 @@ package botlinera.infrastructure.utils
 import java.net.URL
 
 class URLWrapper {
-
     fun get(url: String): String {
         val connection =  URL(url).openConnection()
         connection.setRequestProperty("Accept", "application/json")
