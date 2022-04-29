@@ -1,13 +1,15 @@
 package botlinera.domain.valueobject
 
+import com.google.gson.annotations.SerializedName
+
 class GasStation constructor(
     name: String,
     coordinates: Coordinates,
     time: String,
-    gas95: Double,
-    gas98: Double,
-    gasoil: Double,
-    s2: String
+    gas95: Gas95,
+    gas98: Gas98,
+    gasoil: Gasoil,
+    address: String
 ) {
 
 }
