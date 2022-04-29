@@ -9,6 +9,7 @@ class RetrieveGasStations(
 ) {
     fun execute() {
         val gasStationsInfo = gasStationsRetriever.apply()
+        gasStationPersister.delete()
         gasStationPersister.save(gasStationsInfo)
     }
 }

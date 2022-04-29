@@ -14,6 +14,8 @@ class RetrieveGasStationsShould {
         `when`(fakeGasStationsRetriever.apply()).thenReturn(gasStation())
         val retrieveGasStations = RetrieveGasStations(fakeGasStationsRetriever, fakeGasStationsPersister)
         retrieveGasStations.execute()
-        verify(fakeGasStationsPersister, times(1)).save(gasStation())
+        val order = inOrder(fakeGasStationsPersister)
+        order.verify(fakeGasStationsPersister, times(1)).delete()
+        order.verify(fakeGasStationsPersister, times(1)).save(gasStation())
     }
 }
