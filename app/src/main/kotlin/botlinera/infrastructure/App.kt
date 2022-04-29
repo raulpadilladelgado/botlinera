@@ -3,12 +3,12 @@
  */
 package botlinera.infrastructure
 
-import botlinera.application.usecases.RetrieveGasStations
+import botlinera.application.usecases.UpdateGasStations
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
 
 fun main() {
     println("Botlinera is now working!")
-    RetrieveGasStations(GasStationsRetrieverFromSpanishGovernment(URLWrapper()), GastStationPersisterMongo()).execute()
+    UpdateGasStations(GasStationsRetrieverFromSpanishGovernment(URLWrapper()), GastStationPersisterMongo()).execute()
 }

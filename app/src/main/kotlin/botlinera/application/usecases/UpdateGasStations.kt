@@ -3,7 +3,7 @@ package botlinera.application.usecases
 import botlinera.application.ports.GasStationsRetriever
 import botlinera.application.ports.GastStationPersister
 
-class RetrieveGasStations(
+class UpdateGasStations(
     private val gasStationsRetriever: GasStationsRetriever,
     private val gasStationPersister: GastStationPersister,
 ) {

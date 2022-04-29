@@ -1,8 +1,8 @@
 package botlinera.application.ports
 
-import botlinera.infrastructure.dtos.GasStation
+import botlinera.infrastructure.dtos.GasStationDto
 
 interface GastStationPersister {
-    fun save(gasStationsInfo: List<GasStation>)
+    fun save(gasStationsInfoDto: List<GasStationDto>)
     fun delete()
 }
