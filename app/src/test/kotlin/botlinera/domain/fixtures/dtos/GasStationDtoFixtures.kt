@@ -19,7 +19,10 @@ class GasStationDtoFixtures {
                 "",
                 "",
                 "ALBACETE",
-            "CEPSA"
+                "CEPSA",
+                "1,779",
+                "1,270",
+                ""
             )
         )
     }

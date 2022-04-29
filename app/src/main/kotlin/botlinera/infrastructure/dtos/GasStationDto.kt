@@ -18,4 +18,6 @@ data class GasStationDto(
     @SerializedName("Provincia")                     var province: String,
     @SerializedName("Rótulo")                        var name: String,
     @SerializedName("Precio Gasoleo A")              var gasoilA: String,
+    @SerializedName("Precio Gasoleo B")              var gasoilB: String,
+    @SerializedName("Precio Gasoleo Premium")        var gasoilPremium: String
 )

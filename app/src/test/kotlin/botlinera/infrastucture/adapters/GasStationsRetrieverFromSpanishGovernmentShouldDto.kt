@@ -17,7 +17,7 @@ class GasStationsRetrieverFromSpanishGovernmentShouldDto {
         val file = javaClass.getResource(EXPECTED_GAS_STATION_JSON)?.readText()
         `when`(requester.get(anyString())).thenReturn(file)
         val gasStationsRetrieverFromSpanishGovernment = GasStationsRetrieverFromSpanishGovernment(requester)
-        var gasStationsInfo = gasStationsRetrieverFromSpanishGovernment.apply()
+        val gasStationsInfo = gasStationsRetrieverFromSpanishGovernment.apply()
         assertEquals(gasStation(), gasStationsInfo)
     }
 }
