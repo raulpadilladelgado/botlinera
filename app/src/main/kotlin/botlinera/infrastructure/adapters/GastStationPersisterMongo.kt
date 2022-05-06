@@ -1,6 +1,8 @@
 package botlinera.infrastucture.adapters
 
 import botlinera.application.ports.GastStationPersister
+import botlinera.domain.valueobject.Coordinates
+import botlinera.domain.valueobject.GasStation
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoDatabase
@@ -20,5 +22,9 @@ class GastStationPersisterMongo : GastStationPersister {
 
     override fun delete() {
         collection.deleteMany("{}")
+    }
+
+    override fun queryNearGasStations(coordinates: Coordinates): List<GasStation> {
+        TODO("Not yet implemented")
     }
 }
