@@ -19,6 +19,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.mockito:mockito-core:4.4.0")
+    testImplementation("org.testcontainers:mongodb:1.16.3")
 }
 
 application {

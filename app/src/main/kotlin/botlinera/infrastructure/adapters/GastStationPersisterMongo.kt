@@ -11,8 +11,8 @@ import org.litote.kmongo.deleteMany
 import org.litote.kmongo.getCollectionOfName
 
 
-class GastStationPersisterMongo : GastStationPersister {
-    private val client: MongoClient = KMongo.createClient(System.getenv("DATABASE_URL"))
+class GastStationPersisterMongo(url: String) : GastStationPersister {
+    private val client: MongoClient = KMongo.createClient(url)
     private val database: MongoDatabase = client.getDatabase("botlinera")
     private val collection = database.getCollectionOfName<GasStationDto>("gas_stations")
 

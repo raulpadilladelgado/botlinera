@@ -10,5 +10,8 @@ import botlinera.infrastucture.adapters.GastStationPersisterMongo
 
 fun main() {
     println("Botlinera is now working!")
-    UpdateGasStations(GasStationsRetrieverFromSpanishGovernment(URLWrapper()), GastStationPersisterMongo()).execute()
+    UpdateGasStations(GasStationsRetrieverFromSpanishGovernment(
+        URLWrapper()),
+        GastStationPersisterMongo(System.getenv("DATABASE_URL"))
+    ).execute()
 }
