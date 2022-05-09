@@ -1,5 +1,6 @@
 package botlinera.infrastructure.dtos
 
+import botlinera.domain.valueobject.*
 import com.google.gson.annotations.SerializedName
 
 data class GasStationDto(
@@ -21,4 +22,22 @@ data class GasStationDto(
     @SerializedName("Precio Gasoleo B")              var gasoilB: Double,
     @SerializedName("Precio Gasoleo Premium")        var gasoilPremium: Double
 ) {
+    fun toDomain(): GasStation {
+        return GasStation(
+            name,
+            Location(
+                postalCode,
+                address,
+                time,
+                Coordinates(latitude, longitude),
+                municipality,
+                province
+            ),
+            Prices(
+                Gas95(gas95E10Price, gas95E5Price, gas95E5PremiumPrice),
+                Gas98(gas98E10Price, gas98E5Price),
+                Gasoil(gasoilA, gasoilB, gasoilPremium)
+            )
+        )
+    }
 }

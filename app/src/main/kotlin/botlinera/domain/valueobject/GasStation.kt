@@ -1,8 +1,8 @@
 package botlinera.domain.valueobject
 
 class GasStation constructor(
-    name: String,
-    location: Location,
-    prices: Prices
+    val name: String,
+    val location: Location,
+    val prices: Prices
 ) {
 }
