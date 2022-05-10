@@ -27,11 +27,11 @@ class GastStationPersisterMongoShould {
     }
 
     @Test
-    fun aguacate() {
-        val maximumSouthCoordinate = "27.997629".toDouble()
-        val maximumNorthCoordinate = "28.08784".toDouble()
-        val maximumWestCoordinate = "-16.76256".toDouble()
-        val maximumEastCoordinate = "-16.66078".toDouble()
+    fun searchForNearestGasStationByMaximumCoordinates() {
+        val maximumSouthCoordinate ="27.997816135794025".toDouble()
+        val maximumNorthCoordinate ="28.087647664205974".toDouble()
+        val maximumWestCoordinate ="-16.762560744378813".toDouble()
+        val maximumEastCoordinate ="-16.66077985562119".toDouble()
         val coordinates = MaximumCoordinates(
             maximumSouthCoordinate,
             maximumNorthCoordinate,
