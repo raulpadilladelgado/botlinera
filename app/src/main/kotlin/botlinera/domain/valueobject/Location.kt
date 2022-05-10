@@ -1,12 +1,12 @@
 package botlinera.domain.valueobject
 
 class Location constructor(
-    postalCode: String,
-    address: String,
-    time: String,
-    coordinates: Coordinates,
-    municipality: String,
-    province: String,
+    val postalCode: String,
+    val address: String,
+    val time: String,
+    val coordinates: Coordinates,
+    val municipality: String,
+    val province: String,
 ) {
 
 }

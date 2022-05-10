@@ -3,15 +3,27 @@
  */
 package botlinera.infrastructure
 
+import botlinera.application.usecases.NearGasStation
 import botlinera.application.usecases.UpdateGasStations
+import botlinera.domain.valueobject.Coordinates
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
 
 fun main() {
     println("Botlinera is now working!")
-    UpdateGasStations(GasStationsRetrieverFromSpanishGovernment(
-        URLWrapper()),
-        GastStationPersisterMongo(System.getenv("DATABASE_URL"))
+    val gasStationPersister = GastStationPersisterMongo(System.getenv("DATABASE_URL"))
+    UpdateGasStations(
+        GasStationsRetrieverFromSpanishGovernment(
+            URLWrapper()
+        ),
+        gasStationPersister
     ).execute()
+    val gasStations =
+        NearGasStation(gasStationPersister).execute(Coordinates("28.0427319".toDouble(), "-16.7116703".toDouble()))
+    gasStations.forEach { gasStation ->
+        println(gasStation.name)
+        println(gasStation.latitudeAsText() + "," + gasStation.longitudeAsText())
+        println(gasStation.gas95AsText())
+    }
 }
