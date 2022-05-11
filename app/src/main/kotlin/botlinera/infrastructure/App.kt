@@ -6,24 +6,49 @@ package botlinera.infrastructure
 import botlinera.application.usecases.NearGasStation
 import botlinera.application.usecases.UpdateGasStations
 import botlinera.domain.valueobject.Coordinates
+import botlinera.domain.valueobject.GasStation
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
+import com.github.kotlintelegrambot.bot
+import com.github.kotlintelegrambot.dispatch
+import com.github.kotlintelegrambot.dispatcher.text
+import com.github.kotlintelegrambot.dispatcher.location
+import com.github.kotlintelegrambot.entities.ChatId
+import java.lang.System.getenv
 
 fun main() {
+    val bot = bot {
+        token = getenv("TELEGRAM_BOT_TOKEN")
+        dispatch {
+            text {
+                bot.sendMessage(ChatId.fromId(message.chat.id), text = text)
+            }
+            location {
+                val gasStations =
+                    executeBotlineraMainWorkflow(location.latitude.toString(), location.longitude.toString())
+                gasStations.forEach { gasStation ->
+                    bot.sendMessage(
+                        ChatId.fromId(message.chat.id), text =
+                        "Gasolinera: ${gasStation.name}\n" +
+                                "Precio 95: ${gasStation.prices.gas95.e5}"
+
+                    )
+                }
+            }
+        }
+    }
+    bot.startPolling()
+}
+
+fun executeBotlineraMainWorkflow(latitude: String, longitude: String): List<GasStation> {
     println("Botlinera is now working!")
-    val gasStationPersister = GastStationPersisterMongo(System.getenv("DATABASE_URL"))
+    val gasStationPersister = GastStationPersisterMongo(getenv("DATABASE_URL"))
     UpdateGasStations(
         GasStationsRetrieverFromSpanishGovernment(
             URLWrapper()
         ),
         gasStationPersister
     ).execute()
-    val gasStations =
-        NearGasStation(gasStationPersister).execute(Coordinates("28.0427319".toDouble(), "-16.7116703".toDouble()))
-    gasStations.forEach { gasStation ->
-        println(gasStation.name)
-        println(gasStation.latitudeAsText() + "," + gasStation.longitudeAsText())
-        println(gasStation.gas95AsText())
-    }
+    return NearGasStation(gasStationPersister).execute(Coordinates(latitude.toDouble(), longitude.toDouble()))
 }
