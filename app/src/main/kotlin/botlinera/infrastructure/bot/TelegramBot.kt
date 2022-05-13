@@ -31,14 +31,10 @@ class TelegramBot {
                 getNearGasStations(location.latitude,location.longitude)
                     .forEach { gasStation ->
                         bot.sendMessage(
-                            fromId(message.chat.id), text =
-                            """
-                                     ⛽Gasolinera: ${gasStation.name}
-                                     Precio 95: ${gasStation.prices.gas95.e5}€
-                                     """.trimIndent()
-
+                            fromId(message.chat.id), text = gasStation.formatted()
                         )
-                        bot.sendLocation(fromId(message.chat.id),
+                        bot.sendLocation(
+                            fromId(message.chat.id),
                             gasStation.latitude().toFloat(),
                             gasStation.longitude().toFloat()
                         )

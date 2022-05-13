@@ -10,6 +10,8 @@ import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollectionOfName
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
+import kotlin.Double.Companion.NaN
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 
@@ -42,6 +44,28 @@ class GastStationPersisterMongoShould {
         assertTrue(gasStations.size == 2)
     }
 
+    @Test
+    fun searchForNearestGasStationOrderedByGas95E5AscAndLimit3() {
+        val maximumSouthCoordinate ="4.997816135794025".toDouble()
+        val maximumNorthCoordinate ="50.087647664205974".toDouble()
+        val maximumWestCoordinate ="-18.762560744378813".toDouble()
+        val maximumEastCoordinate ="-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+
+        val gasStations = GastStationPersisterMongo(mongoDBContainer.replicaSetUrl).queryNearGasStations(coordinates)
+
+        assertEquals(gasStations.get(0).prices.gas95.e5, 1.138)
+        assertEquals(gasStations.get(1).prices.gas95.e5, 1.238)
+        assertEquals(gasStations.get(2).prices.gas95.e5, 1.538)
+        assertEquals(3, gasStations.size)
+
+    }
+
     private fun multipleGasStationsDtosWithinAFiveKilometersRadius(): List<GasStationDto> {
         return listOf(
             GasStationDto(
@@ -52,16 +76,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -16.737889,
                 "Adeje",
-                Double.NaN,
+                NaN,
                 1.538,
-                Double.NaN,
-                Double.NaN,
-                Double.NaN,
+                NaN,
+                NaN,
+                NaN,
                 "GasStation1",
                 "GasStation1",
-                Double.NaN,
-                Double.NaN,
-                Double.NaN
+                NaN,
+                NaN,
+                NaN
             ),
             GasStationDto(
                 "38660",
@@ -71,16 +95,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -20.7845454,
                 "Adeje",
-                Double.NaN,
-                1.538,
-                Double.NaN,
-                Double.NaN,
-                Double.NaN,
+                NaN,
+                1.648,
+                NaN,
+                NaN,
+                NaN,
                 "GasStation2",
                 "GasStation2",
-                Double.NaN,
-                Double.NaN,
-                Double.NaN
+                NaN,
+                NaN,
+                NaN
             ),
             GasStationDto(
                 "38660",
@@ -90,16 +114,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -16.662639,
                 "Adeje",
-                Double.NaN,
-                1.538,
-                Double.NaN,
-                Double.NaN,
-                Double.NaN,
+                NaN,
+                NaN,
+                NaN,
+                NaN,
+                NaN,
                 "GasStation3",
                 "GasStation3",
-                Double.NaN,
-                Double.NaN,
-                Double.NaN
+                NaN,
+                NaN,
+                NaN
             ),
             GasStationDto(
                 "38660",
@@ -109,16 +133,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -16.714611,
                 "Adeje",
-                Double.NaN,
-                1.538,
-                Double.NaN,
-                Double.NaN,
-                Double.NaN,
+                NaN,
+                1.238,
+                NaN,
+                NaN,
+                NaN,
                 "GasStation4",
                 "GasStation4",
-                Double.NaN,
-                Double.NaN,
-                Double.NaN
+                NaN,
+                NaN,
+                NaN
             ),
 
             GasStationDto(
@@ -129,16 +153,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -16.714611,
                 "Adeje",
-                Double.NaN,
-                1.538,
-                Double.NaN,
-                Double.NaN,
-                Double.NaN,
+                NaN,
+                1.938,
+                NaN,
+                NaN,
+                NaN,
                 "GasStation5",
                 "GasStation5",
-                Double.NaN,
-                Double.NaN,
-                Double.NaN
+                NaN,
+                NaN,
+                NaN
             ),
 
             GasStationDto(
@@ -149,16 +173,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -1.714611,
                 "Adeje",
-                Double.NaN,
-                1.538,
-                Double.NaN,
-                Double.NaN,
-                Double.NaN,
+                NaN,
+                1.138,
+                NaN,
+                NaN,
+                NaN,
                 "GasStation6",
                 "GasStation6",
-                Double.NaN,
-                Double.NaN,
-                Double.NaN
+                NaN,
+                NaN,
+                NaN
             )
 
         )

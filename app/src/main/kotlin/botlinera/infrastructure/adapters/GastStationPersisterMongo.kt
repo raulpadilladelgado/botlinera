@@ -11,6 +11,7 @@ import org.litote.kmongo.KMongo
 import org.litote.kmongo.deleteMany
 import org.litote.kmongo.getCollectionOfName
 import java.util.*
+import kotlin.Double.Companion.NaN
 
 
 class GastStationPersisterMongo(url: String) : GastStationPersister {
@@ -33,10 +34,13 @@ class GastStationPersisterMongo(url: String) : GastStationPersister {
                 Document("latitude", Document("\$lt", coordinates.maximumNorthCoordinate)),
                 Document("longitude", Document("\$gt", coordinates.maximumWestCoordinate)),
                 Document("longitude", Document("\$lt", coordinates.maximumEastCoordinate)),
+                Document("gas95E5Price", Document("\$ne", NaN)),
             )
         )
+
+        val gas95E5PriceAsc = Document("gas95E5Price", 1)
         val results = mutableListOf<GasStationDto>()
-        collection.find(query).into(results)
+        collection.find(query).sort(gas95E5PriceAsc).limit(3).into(results)
         return results.map{e -> e.toDomain()}
     }
 }
