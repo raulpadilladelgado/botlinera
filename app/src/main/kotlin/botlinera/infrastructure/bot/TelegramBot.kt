@@ -46,10 +46,6 @@ class TelegramBot {
     private fun getNearGasStations(latitude: Float, longitude: Float): List<GasStation> {
         val gasStationPersister = GastStationPersisterMongo(getenv("DATABASE_URL"))
 
-        UpdateGasStations(
-            GasStationsRetrieverFromSpanishGovernment(URLWrapper()),gasStationPersister
-        ).execute()
-
         return NearGasStation(gasStationPersister).execute(Coordinates(latitude.toDouble(), longitude.toDouble()))
     }
 }
