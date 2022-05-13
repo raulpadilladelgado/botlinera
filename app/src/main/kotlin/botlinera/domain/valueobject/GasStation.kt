@@ -1,16 +1,16 @@
 package botlinera.domain.valueobject
 
-class GasStation (
+class GasStation(
     val name: String,
     val location: Location,
     val prices: Prices
 ) {
-    fun latitudeAsText(): String{
-        return location.coordinates.latitude.toString()
+    fun latitude(): Double {
+        return location.coordinates.latitude
     }
 
-    fun longitudeAsText(): String{
-        return location.coordinates.longitude.toString()
+    fun longitude(): Double {
+        return location.coordinates.longitude
     }
 
     fun gas95AsText(): String{

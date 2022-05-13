@@ -39,8 +39,8 @@ class TelegramBot {
 
                         )
                         bot.sendLocation(fromId(message.chat.id),
-                            gasStation.location.coordinates.latitude.toFloat(),
-                            gasStation.location.coordinates.longitude.toFloat()
+                            gasStation.latitude().toFloat(),
+                            gasStation.longitude().toFloat()
                         )
                 }
             }
