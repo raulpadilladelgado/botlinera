@@ -38,6 +38,10 @@ class TelegramBot {
                                      """.trimIndent()
 
                         )
+                        bot.sendLocation(fromId(message.chat.id),
+                            gasStation.location.coordinates.latitude.toFloat(),
+                            gasStation.location.coordinates.longitude.toFloat()
+                        )
                 }
             }
         }
