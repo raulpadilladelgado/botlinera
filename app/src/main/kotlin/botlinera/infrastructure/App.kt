@@ -5,30 +5,22 @@ package botlinera.infrastructure
 
 import botlinera.application.usecases.UpdateGasStations
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
+import botlinera.infrastructure.schedulers.GasStationScheduler
 import botlinera.infrastructure.bot.TelegramBot
 import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit.HOURS
 
-private const val INITIAL_DELAY = 0L
-private const val PERIOD = 4L
 
 fun main() {
-    updateGasStationsPeriodcally()
-    TelegramBot().startPolling()
-}
-
-private fun updateGasStationsPeriodcally() {
     val gasStationPersister = GastStationPersisterMongo(System.getenv("DATABASE_URL"))
 
-    val executorService = Executors.newSingleThreadScheduledExecutor()
-    executorService.scheduleAtFixedRate(
-        {
-            UpdateGasStations(GasStationsRetrieverFromSpanishGovernment(URLWrapper()), gasStationPersister).execute()
-        }, INITIAL_DELAY, PERIOD, HOURS
-    )
-
+    GasStationScheduler().start {
+        UpdateGasStations(
+            GasStationsRetrieverFromSpanishGovernment(URLWrapper()),
+            gasStationPersister
+        ).execute()
+    }
+    TelegramBot().startPolling()
 }
 
 

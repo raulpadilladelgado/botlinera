@@ -1,11 +1,8 @@
 package botlinera.infrastructure.bot
 
 import botlinera.application.usecases.NearGasStation
-import botlinera.application.usecases.UpdateGasStations
 import botlinera.domain.valueobject.Coordinates
 import botlinera.domain.valueobject.GasStation
-import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
-import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
@@ -15,8 +12,6 @@ import com.github.kotlintelegrambot.entities.ChatId.Companion.fromId
 import java.lang.System.getenv
 
 class TelegramBot {
-
-
     fun startPolling() {
         initBot()
     }
@@ -28,7 +23,7 @@ class TelegramBot {
                 bot.sendMessage(fromId(message.chat.id), text = text)
             }
             location {
-                getNearGasStations(location.latitude,location.longitude)
+                getNearGasStations(location.latitude, location.longitude)
                     .forEach { gasStation ->
                         bot.sendMessage(
                             fromId(message.chat.id), text = gasStation.formatted()
@@ -38,14 +33,13 @@ class TelegramBot {
                             gasStation.latitude().toFloat(),
                             gasStation.longitude().toFloat()
                         )
-                }
+                    }
             }
         }
     }.startPolling()
 
     private fun getNearGasStations(latitude: Float, longitude: Float): List<GasStation> {
         val gasStationPersister = GastStationPersisterMongo(getenv("DATABASE_URL"))
-
         return NearGasStation(gasStationPersister).execute(Coordinates(latitude.toDouble(), longitude.toDouble()))
     }
 }
