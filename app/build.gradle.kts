@@ -1,5 +1,7 @@
 plugins {
     kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+
     application
 }
 
@@ -26,4 +28,10 @@ dependencies {
 
 application {
     mainClass.set("botlinera.infrastructure.AppKt")
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "botlinera.infrastructure.AppKt"
+    }
 }
