@@ -16,7 +16,7 @@ class Gasoil constructor(
             formatted += "\n - B: ${b}€"
         }
 
-        if (!premium.isNaN()){
+        if (!premium.isNaN()) {
             formatted += "\n - Premium: ${premium}€"
         }
 

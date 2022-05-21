@@ -20,7 +20,7 @@ class TelegramBot {
         token = getenv("TELEGRAM_BOT_TOKEN")
         dispatch {
             text {
-                bot.sendMessage(fromId(message.chat.id), text = text)
+                bot.sendMessage(fromId(message.chat.id), text = "Aguacate: $text")
             }
             location {
                 getNearGasStations(location.latitude, location.longitude)

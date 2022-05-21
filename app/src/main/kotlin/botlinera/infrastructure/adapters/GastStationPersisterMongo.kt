@@ -41,6 +41,6 @@ class GastStationPersisterMongo(url: String) : GastStationPersister {
         val gas95E5PriceAsc = Document("gas95E5Price", 1)
         val results = mutableListOf<GasStationDto>()
         collection.find(query).sort(gas95E5PriceAsc).limit(3).into(results)
-        return results.map{e -> e.toDomain()}
+        return results.map { e -> e.toDomain() }
     }
 }

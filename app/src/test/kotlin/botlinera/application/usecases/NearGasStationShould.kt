@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 class NearGasStationShould {
     @Test
     fun getNearGasStations() {
-        val coordinates = Coordinates("28.0427319".toDouble(),"-16.7116703".toDouble())
+        val coordinates = Coordinates("28.0427319".toDouble(), "-16.7116703".toDouble())
         val gasStationsPersister = mockk<GastStationPersister>()
         val expectedGasStations = multipleGasStationsWithinAFiveKilometersRadius()
         every { gasStationsPersister.queryNearGasStations(any()) } returns expectedGasStations

@@ -30,10 +30,10 @@ class GastStationPersisterMongoShould {
 
     @Test
     fun searchForNearestGasStationByMaximumCoordinates() {
-        val maximumSouthCoordinate ="27.997816135794025".toDouble()
-        val maximumNorthCoordinate ="28.087647664205974".toDouble()
-        val maximumWestCoordinate ="-16.762560744378813".toDouble()
-        val maximumEastCoordinate ="-16.66077985562119".toDouble()
+        val maximumSouthCoordinate = "27.997816135794025".toDouble()
+        val maximumNorthCoordinate = "28.087647664205974".toDouble()
+        val maximumWestCoordinate = "-16.762560744378813".toDouble()
+        val maximumEastCoordinate = "-16.66077985562119".toDouble()
         val coordinates = MaximumCoordinates(
             maximumSouthCoordinate,
             maximumNorthCoordinate,
@@ -46,10 +46,10 @@ class GastStationPersisterMongoShould {
 
     @Test
     fun searchForNearestGasStationOrderedByGas95E5AscAndLimit3() {
-        val maximumSouthCoordinate ="4.997816135794025".toDouble()
-        val maximumNorthCoordinate ="50.087647664205974".toDouble()
-        val maximumWestCoordinate ="-18.762560744378813".toDouble()
-        val maximumEastCoordinate ="-1.56077985562119".toDouble()
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
         val coordinates = MaximumCoordinates(
             maximumSouthCoordinate,
             maximumNorthCoordinate,
@@ -59,9 +59,9 @@ class GastStationPersisterMongoShould {
 
         val gasStations = GastStationPersisterMongo(mongoDBContainer.replicaSetUrl).queryNearGasStations(coordinates)
 
-        assertEquals(gasStations.get(0).prices.gas95.e5, 1.138)
-        assertEquals(gasStations.get(1).prices.gas95.e5, 1.238)
-        assertEquals(gasStations.get(2).prices.gas95.e5, 1.538)
+        assertEquals(gasStations[0].prices.gas95.e5, 1.138)
+        assertEquals(gasStations[1].prices.gas95.e5, 1.238)
+        assertEquals(gasStations[2].prices.gas95.e5, 1.538)
         assertEquals(3, gasStations.size)
 
     }
@@ -115,7 +115,7 @@ class GastStationPersisterMongoShould {
                 -16.662639,
                 "Adeje",
                 NaN,
-                NaN,
+                1.648,
                 NaN,
                 NaN,
                 NaN,

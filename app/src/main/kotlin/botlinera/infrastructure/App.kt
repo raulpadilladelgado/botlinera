@@ -5,8 +5,8 @@ package botlinera.infrastructure
 
 import botlinera.application.usecases.UpdateGasStations
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
-import botlinera.infrastructure.schedulers.GasStationScheduler
 import botlinera.infrastructure.bot.TelegramBot
+import botlinera.infrastructure.schedulers.GasStationScheduler
 import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
 

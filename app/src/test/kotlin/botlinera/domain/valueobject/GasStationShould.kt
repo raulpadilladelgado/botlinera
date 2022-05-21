@@ -2,8 +2,6 @@ package botlinera.domain.valueobject
 
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures
 import org.junit.Test
-import java.lang.Double
-import kotlin.Double.Companion
 import kotlin.Double.Companion.NaN
 import kotlin.test.assertEquals
 

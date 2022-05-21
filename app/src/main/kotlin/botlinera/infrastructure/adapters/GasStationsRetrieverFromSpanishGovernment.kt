@@ -11,9 +11,10 @@ import com.google.gson.stream.JsonWriter
 import java.io.IOException
 
 
-private const val GAS_STATIONS_SOURCE = "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
+private const val GAS_STATIONS_SOURCE =
+    "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
 
-class GasStationsRetrieverFromSpanishGovernment (private val url: URLWrapper) : GasStationsRetriever{
+class GasStationsRetrieverFromSpanishGovernment(private val url: URLWrapper) : GasStationsRetriever {
     override fun apply(): List<GasStationDto> {
         val builder = GsonBuilder()
         builder.registerTypeAdapter(Double::class.java, DoubleAdapter())
@@ -33,7 +34,7 @@ class GasStationsRetrieverFromSpanishGovernment (private val url: URLWrapper) : 
         @Throws(IOException::class)
         override fun read(`in`: JsonReader): Double {
             val value = `in`.nextString()
-            return if(value.isNotEmpty()) value.replace(",", ".").toDouble() else Double.NaN
+            return if (value.isNotEmpty()) value.replace(",", ".").toDouble() else Double.NaN
         }
     }
 }
