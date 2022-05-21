@@ -1,12 +1,35 @@
-version: '3.3'
+version: '3.8'
+
+networks:
+  default:
+    name: botlinera_network
 
 services:
-  mongo:
+  botlinera:
+    container_name: botlinera
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    env_file:
+      - ../.env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
     image: mongo
     ports:
       - "27017:27017"
-    container_name: botlinera_gas_station
+    container_name: botlinera_db
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u user -p password --quiet | grep 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     environment:
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_USERNAME: user
+      MONGO_PASSWORD: password
       MONGO_INITDB_DATABASE: botlinera

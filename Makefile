@@ -29,7 +29,6 @@ help:
 	echo "${MSG_IDENT}  ⚠️   Requirements : Java 17 \n"
 	echo "${MSG_IDENT}  clean                   -  🚮  Erase the 📁 build/"
 	echo "${MSG_IDENT}  test                    -  ✅  Run Unit tests"
-	echo "${MSG_IDENT}  run                     -  🚀  Run the app with profile '${ENV}'"
 	echo
 	echo "${MSG_IDENT}=======   🐳  DOCKER   =====================================\n"
 	echo "${MSG_IDENT}  ℹ️   To work with $(PROJECT_NAME) running alone in a container"
@@ -50,10 +49,6 @@ clean:
 
 test: clean
 	./gradlew test
-
-run: clean
-	./gradlew run
-
 
 ######################################################################
 ########################   🐳 DOCKER    ##############################
