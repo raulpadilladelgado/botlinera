@@ -52,7 +52,7 @@ test: clean
 up:
 	echo "\n\n${MSG_SEPARATOR}\n\n 🐳 up => 🚀  Start container \n\n${MSG_SEPARATOR}\n\n"
 
-	docker-compose -f docker/docker-compose.dev.yml up -d
+	docker-compose -f docker/docker-compose.dev.yml up -d --build
 
 down:
 	echo "\n\n${MSG_SEPARATOR}\n\n 🐳 down => 🚀  Stop container \n\n${MSG_SEPARATOR}\n\n"
