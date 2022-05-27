@@ -2,7 +2,8 @@ package botlinera.application.usecases
 
 import botlinera.application.ports.GastStationPersister
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
-import botlinera.domain.valueobject.Coordinates
+import botlinera.domain.valueobject.*
+import botlinera.domain.valueobject.GasType.*
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
@@ -14,11 +15,10 @@ class NearGasStationShould {
         val coordinates = Coordinates("28.0427319".toDouble(), "-16.7116703".toDouble())
         val gasStationsPersister = mockk<GastStationPersister>()
         val expectedGasStations = multipleGasStationsWithinAFiveKilometersRadius()
-        every { gasStationsPersister.queryNearGasStations(any()) } returns expectedGasStations
+        every { gasStationsPersister.queryNearGasStations(any(), GASOLINA_95_E5) } returns expectedGasStations
 
-        val gasStations = NearGasStation(gasStationsPersister).execute(coordinates)
+        val gasStations = NearGasStation(gasStationsPersister).execute(coordinates, GASOLINA_98_E5)
 
         assertEquals(expectedGasStations, gasStations)
     }
-
 }

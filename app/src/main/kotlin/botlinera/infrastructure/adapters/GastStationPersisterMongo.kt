@@ -2,6 +2,7 @@ package botlinera.infrastucture.adapters
 
 import botlinera.application.ports.GastStationPersister
 import botlinera.domain.valueobject.GasStation
+import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
@@ -13,6 +14,10 @@ import org.litote.kmongo.getCollectionOfName
 import java.util.*
 import kotlin.Double.Companion.NaN
 
+
+private const val ASCENDANT_ORDER = 1
+
+private const val MAX_GAS_STATIONS_TO_RETRIEVE = 3
 
 class GastStationPersisterMongo(url: String) : GastStationPersister {
     private val client: MongoClient = KMongo.createClient(url)
@@ -27,20 +32,30 @@ class GastStationPersisterMongo(url: String) : GastStationPersister {
         collection.deleteMany("{}")
     }
 
-    override fun queryNearGasStations(coordinates: MaximumCoordinates): List<GasStation> {
+    override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType): List<GasStation> {
+        val gasPriceToFilter: String = findGasPriceFilterToApplyBy(gasType)
         val query = Document(
             "\$and", Arrays.asList(
                 Document("latitude", Document("\$gt", coordinates.maximumSouthCoordinate)),
                 Document("latitude", Document("\$lt", coordinates.maximumNorthCoordinate)),
                 Document("longitude", Document("\$gt", coordinates.maximumWestCoordinate)),
                 Document("longitude", Document("\$lt", coordinates.maximumEastCoordinate)),
-                Document("gas95E5Price", Document("\$ne", NaN)),
+                Document(gasPriceToFilter, Document("\$ne", NaN)),
             )
         )
 
-        val gas95E5PriceAsc = Document("gas95E5Price", 1)
+        val gas95E5PriceAsc = Document(gasPriceToFilter, ASCENDANT_ORDER)
         val results = mutableListOf<GasStationDto>()
-        collection.find(query).sort(gas95E5PriceAsc).limit(3).into(results)
-        return results.map { e -> e.toDomain() }
+        collection.find(query).sort(gas95E5PriceAsc).limit(MAX_GAS_STATIONS_TO_RETRIEVE).into(results)
+        return results.map { gasStationDto -> gasStationDto.toDomain() }
+    }
+
+    private fun findGasPriceFilterToApplyBy(gasType: GasType): String {
+        return when (gasType) {
+            GasType.GASOLINA_95_E5 -> "gas95E5Price"
+            else -> {
+                throw RuntimeException()
+            }
+        }
     }
 }

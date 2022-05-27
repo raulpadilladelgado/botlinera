@@ -3,9 +3,11 @@ package botlinera.infrastructure.bot
 import botlinera.application.usecases.NearGasStation
 import botlinera.domain.valueobject.Coordinates
 import botlinera.domain.valueobject.GasStation
+import botlinera.domain.valueobject.GasType
 import botlinera.infrastucture.adapters.GastStationPersisterMongo
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
+import com.github.kotlintelegrambot.dispatcher.command
 import com.github.kotlintelegrambot.dispatcher.location
 import com.github.kotlintelegrambot.dispatcher.text
 import com.github.kotlintelegrambot.entities.ChatId.Companion.fromId
@@ -43,11 +45,23 @@ class TelegramBot {
                         )
                     }
             }
+            command("gasolina95") {
+
+            }
+            command("gasolina98") {
+
+            }
+            command("gasoil") {
+
+            }
         }
     }.startPolling()
 
     private fun getNearGasStations(latitude: Float, longitude: Float): List<GasStation> {
         val gasStationPersister = GastStationPersisterMongo(getenv("DATABASE_URL"))
-        return NearGasStation(gasStationPersister).execute(Coordinates(latitude.toDouble(), longitude.toDouble()))
+        return NearGasStation(gasStationPersister).execute(
+            Coordinates(latitude.toDouble(), longitude.toDouble()),
+            GasType.GASOLINA_98_E5
+        )
     }
 }

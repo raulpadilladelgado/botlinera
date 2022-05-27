@@ -1,5 +1,6 @@
 package botlinera.infrastucture.adapters
 
+import botlinera.domain.valueobject.GasType.GASOLINA_95_E5
 import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
@@ -40,7 +41,10 @@ class GastStationPersisterMongoShould {
             maximumWestCoordinate,
             maximumEastCoordinate
         )
-        val gasStations = GastStationPersisterMongo(mongoDBContainer.replicaSetUrl).queryNearGasStations(coordinates)
+        val gasStations = GastStationPersisterMongo(mongoDBContainer.replicaSetUrl).queryNearGasStations(
+            coordinates,
+            GASOLINA_95_E5
+        )
         assertTrue(gasStations.size == 2)
     }
 
@@ -57,7 +61,9 @@ class GastStationPersisterMongoShould {
             maximumEastCoordinate
         )
 
-        val gasStations = GastStationPersisterMongo(mongoDBContainer.replicaSetUrl).queryNearGasStations(coordinates)
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOLINA_95_E5)
 
         assertEquals(gasStations[0].prices.gas95.e5, 1.138)
         assertEquals(gasStations[1].prices.gas95.e5, 1.238)
