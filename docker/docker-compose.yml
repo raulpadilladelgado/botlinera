@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  oak:
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
-    container_name: "botlinera"
-    restart: on-failure
