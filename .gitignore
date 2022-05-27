@@ -9,3 +9,6 @@ app/build
 
 # Ignore IDE configuration
 .idea
+
+# Ignore environment variables
+.env
