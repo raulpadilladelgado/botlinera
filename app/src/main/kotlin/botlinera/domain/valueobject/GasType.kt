@@ -8,5 +8,5 @@ enum class GasType() {
     GASOLINA_98_E10,
     GASOIL_A,
     GASOIL_B,
-    GASOIL_PREMIUM,
+    GASOIL_PREMIUM
 }

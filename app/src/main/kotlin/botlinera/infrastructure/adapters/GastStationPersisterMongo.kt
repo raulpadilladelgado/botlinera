@@ -3,6 +3,7 @@ package botlinera.infrastucture.adapters
 import botlinera.application.ports.GastStationPersister
 import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
+import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
@@ -44,18 +45,22 @@ class GastStationPersisterMongo(url: String) : GastStationPersister {
             )
         )
 
-        val gas95E5PriceAsc = Document(gasPriceToFilter, ASCENDANT_ORDER)
+        val gasPriceAscFilter = Document(gasPriceToFilter, ASCENDANT_ORDER)
         val results = mutableListOf<GasStationDto>()
-        collection.find(query).sort(gas95E5PriceAsc).limit(MAX_GAS_STATIONS_TO_RETRIEVE).into(results)
+        collection.find(query).sort(gasPriceAscFilter).limit(MAX_GAS_STATIONS_TO_RETRIEVE).into(results)
         return results.map { gasStationDto -> gasStationDto.toDomain() }
     }
 
     private fun findGasPriceFilterToApplyBy(gasType: GasType): String {
         return when (gasType) {
-            GasType.GASOLINA_95_E5 -> "gas95E5Price"
-            else -> {
-                throw RuntimeException()
-            }
+            GASOLINA_95_E5 -> "gas95E5Price"
+            GASOLINA_95_E10 -> "gas95E10Price"
+            GASOLINA_95_E5_PREMIUM -> "gas95E5PremiumPrice"
+            GASOLINA_98_E5 -> "gas98E5Price"
+            GASOLINA_98_E10 -> "gas98E10Price"
+            GASOIL_A -> "gasoilA"
+            GASOIL_B -> "gasoilB"
+            GASOIL_PREMIUM -> "gasoilPremium"
         }
     }
 }

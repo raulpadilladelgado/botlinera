@@ -8,5 +8,5 @@ import botlinera.infrastructure.dtos.GasStationDto
 interface GastStationPersister {
     fun save(gasStationDto: List<GasStationDto>)
     fun delete()
-    fun queryNearGasStations(coordinates: MaximumCoordinates, gasolina95E5: GasType): List<GasStation>
+    fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType = GasType.GASOLINA_98_E5): List<GasStation>
 }
