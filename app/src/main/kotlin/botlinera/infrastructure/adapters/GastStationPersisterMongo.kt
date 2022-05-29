@@ -1,4 +1,4 @@
-package botlinera.infrastucture.adapters
+package botlinera.infrastructure.adapters
 
 import botlinera.application.ports.GastStationPersister
 import botlinera.domain.valueobject.GasStation

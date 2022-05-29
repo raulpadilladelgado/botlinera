@@ -6,12 +6,12 @@ import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 
 class NearGasStation(
-    val gasStationRepository: GastStationPersister
+    private val gasStationRepository: GastStationPersister
 ) {
-    fun execute(coordinates: Coordinates, gasolina98E5: GasType): List<GasStation> {
+    fun execute(coordinates: Coordinates, gasType: GasType): List<GasStation> {
         return gasStationRepository.queryNearGasStations(
             coordinates.calculateMaximumCoordinates(),
-            GasType.GASOLINA_95_E5
+            gasType
         )
     }
 }

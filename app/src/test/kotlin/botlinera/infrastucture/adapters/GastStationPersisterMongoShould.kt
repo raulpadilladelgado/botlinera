@@ -2,6 +2,7 @@ package botlinera.infrastucture.adapters
 
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
+import botlinera.infrastructure.adapters.GastStationPersisterMongo
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection

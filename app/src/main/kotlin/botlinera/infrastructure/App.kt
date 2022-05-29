@@ -8,7 +8,7 @@ import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernme
 import botlinera.infrastructure.bot.TelegramBot
 import botlinera.infrastructure.schedulers.GasStationScheduler
 import botlinera.infrastructure.utils.URLWrapper
-import botlinera.infrastucture.adapters.GastStationPersisterMongo
+import botlinera.infrastructure.adapters.GastStationPersisterMongo
 
 
 fun main() {
