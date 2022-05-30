@@ -6,6 +6,7 @@ import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
 import botlinera.infrastructure.adapters.GastStationPersisterMongo
+import botlinera.infrastructure.utils.BotMessages
 import com.github.kotlintelegrambot.bot
 import com.github.kotlintelegrambot.dispatch
 import com.github.kotlintelegrambot.dispatcher.command
@@ -28,13 +29,7 @@ class TelegramBot {
                 if (text !in commands) {
                     bot.sendMessage(
                         fromId(message.chat.id),
-                        text = """
-                        ¡Hola! Me llamo *Botlinera* 🤖⛽️ y estoy aquí para ayudarte a ahorrar dinero 💸.
-                        
-                        Para empezar solo tienes que enviarme tu ubicación para así mostrarte las *tres gasolineras más baratas* cerca de ti. 
-                        
-                        Recuerda que a la izquierda del cuadro para introducir texto se encuentra un menú en el que podrás elegir que tipo de combustible sueles echar y te mostraré los resultado ordenados en base a ese criterio
-                        """.trimIndent(),
+                        text = BotMessages.unknowMessage(gasType),
                         MARKDOWN
                     )
                 }
@@ -43,104 +38,104 @@ class TelegramBot {
                 val nearGasStations = getNearGasStations(location.latitude, location.longitude, gasType)
                 if (nearGasStations.isEmpty()) {
                     bot.sendMessage(
-                        fromId(message.chat.id), text = """
-                            Lo siento, no he podido encontrar gasolineras que vendan $gasType
-                            
-                            Intentalo en otro momento o contacta con los que me programaron
-                        """.trimIndent()
+                        fromId(message.chat.id), text = BotMessages.notGasStationsFound(gasType)
                     )
+                } else {
+                    bot.sendMessage(
+                        fromId(message.chat.id), text = BotMessages.showingGasStations(gasType)
+                    )
+                    nearGasStations
+                        .forEach { gasStation ->
+                            bot.sendMessage(
+                                fromId(message.chat.id), text = gasStation.formatted()
+                            )
+                            bot.sendLocation(
+                                fromId(message.chat.id),
+                                gasStation.latitude().toFloat(),
+                                gasStation.longitude().toFloat()
+                            )
+                        }
                 }
-                nearGasStations
-                    .forEach { gasStation ->
-                        bot.sendMessage(
-                            fromId(message.chat.id), text = gasStation.formatted()
-                        )
-                        bot.sendLocation(
-                            fromId(message.chat.id),
-                            gasStation.latitude().toFloat(),
-                            gasStation.longitude().toFloat()
-                        )
-                    }
             }
-            command("gasolina95e5") {
-                bot.sendMessage(
-                    fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasolina 95 E5. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
-                    MARKDOWN
-                )
+            command("start") {
                 gasType = GASOLINA_95_E5
-            }
-            command("gasolina95e5premium") {
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasolina 95 E5 Premium. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
+                    text = BotMessages.welcoming(gasType),
                     MARKDOWN
                 )
+            }
+            command("ayuda") {
+                gasType = GASOLINA_95_E5
+                bot.sendMessage(
+                    fromId(message.chat.id),
+                    text = BotMessages.welcoming(gasType),
+                    MARKDOWN
+                )
+            }
+            command("gasolina_95_e5") {
+                gasType = GASOLINA_95_E5
+                bot.sendMessage(
+                    fromId(message.chat.id),
+                    text = BotMessages.chosenGasType(gasType),
+                    MARKDOWN
+                )
+            }
+            command("gasolina_95_e5_premium") {
                 gasType = GASOLINA_95_E5_PREMIUM
-            }
-            command("gasolina95e10") {
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasolina 95 E10. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
+                    text = BotMessages.chosenGasType(gasType),
                     MARKDOWN
                 )
+            }
+            command("gasolina_95_e10") {
                 gasType = GASOLINA_95_E10
-            }
-            command("gasolina98e5") {
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasolina 98 E5. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
+                    text = BotMessages.chosenGasType(gasType),
                     MARKDOWN
                 )
+            }
+            command("gasolina_98_e5") {
                 gasType = GASOLINA_98_E5
-            }
-            command("gasolina98E10") {
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasolina 98 E10. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
+                    text = BotMessages.chosenGasType(gasType),
                     MARKDOWN
                 )
+            }
+            command("gasolina_98_e10") {
                 gasType = GASOLINA_98_E10
-            }
-            command("gasoilA") {
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasoil A. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
+                    text = BotMessages.chosenGasType(gasType),
                     MARKDOWN
                 )
+            }
+            command("gasoil_a") {
                 gasType = GASOIL_A
-            }
-            command("gasoilB") {
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasoil B. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
+                    text = BotMessages.chosenGasType(gasType),
                     MARKDOWN
                 )
+            }
+            command("gasoil_b") {
                 gasType = GASOIL_B
-            }
-            command("gasoilPremium") {
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = """
-                        Quieres echar gasoil Premium. Ahora manda tu ubicación y te buscaré las tres más baratas cerca de ti
-                        """.trimIndent(),
+                    text = BotMessages.chosenGasType(gasType),
                     MARKDOWN
                 )
+            }
+            command("gasoil_premium") {
                 gasType = GASOIL_PREMIUM
+                bot.sendMessage(
+                    fromId(message.chat.id),
+                    text = BotMessages.chosenGasType(gasType),
+                    MARKDOWN
+                )
             }
         }
     }.startPolling()
@@ -154,13 +149,15 @@ class TelegramBot {
     }
 
     private val commands = listOf(
-        "/gasolina95e5",
-        "/gasolina95E5Premium",
-        "/gasolina95E10",
-        "/gasolina98E5",
-        "/gasolina98E10",
-        "/gasoilA",
-        "/gasoilB",
-        "/gasoilPremium"
+        "/start",
+        "/ayuda",
+        "/gasolina_95_e5",
+        "/gasolina_95_e5_premium",
+        "/gasolina_95_e10",
+        "/gasolina_98_e5",
+        "/gasolina_98_e10",
+        "/gasoil_a",
+        "/gasoil_b",
+        "/gasoil_premium"
     )
 }
