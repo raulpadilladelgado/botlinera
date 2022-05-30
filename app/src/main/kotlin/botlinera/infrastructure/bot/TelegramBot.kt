@@ -22,6 +22,7 @@ class TelegramBot {
 
     private fun initBot() = bot {
         token = getenv("TELEGRAM_BOT_TOKEN")
+        var gasType = GASOLINA_95_E5
         dispatch {
             text {
                 if (text !in commands) {
@@ -32,11 +33,34 @@ class TelegramBot {
                         
                         Para empezar solo tienes que enviarme tu ubicación para así mostrarte las *tres gasolineras más baratas* cerca de ti. 
                         
-                        Recuerda que a la izquierda del cuadro para introducir texto se encuentra un menú en el que podrás elegir que tipo de combustible sueles echar y te mostraré los resultado ordenado en base a eso
+                        Recuerda que a la izquierda del cuadro para introducir texto se encuentra un menú en el que podrás elegir que tipo de combustible sueles echar y te mostraré los resultado ordenados en base a ese criterio
                         """.trimIndent(),
                         MARKDOWN
                     )
                 }
+            }
+            location {
+                val nearGasStations = getNearGasStations(location.latitude, location.longitude, gasType)
+                if (nearGasStations.isEmpty()) {
+                    bot.sendMessage(
+                        fromId(message.chat.id), text = """
+                            Lo siento, no he podido encontrar gasolineras que vendan $gasType
+                            
+                            Intentalo en otro momento o contacta con los que me programaron
+                        """.trimIndent()
+                    )
+                }
+                nearGasStations
+                    .forEach { gasStation ->
+                        bot.sendMessage(
+                            fromId(message.chat.id), text = gasStation.formatted()
+                        )
+                        bot.sendLocation(
+                            fromId(message.chat.id),
+                            gasStation.latitude().toFloat(),
+                            gasStation.longitude().toFloat()
+                        )
+                    }
             }
             command("gasolina95e5") {
                 bot.sendMessage(
@@ -46,19 +70,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOLINA_95_E5)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOLINA_95_E5
             }
             command("gasolina95e5premium") {
                 bot.sendMessage(
@@ -68,19 +80,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOLINA_95_E5_PREMIUM)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOLINA_95_E5_PREMIUM
             }
             command("gasolina95e10") {
                 bot.sendMessage(
@@ -90,19 +90,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOLINA_95_E10)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOLINA_95_E10
             }
             command("gasolina98e5") {
                 bot.sendMessage(
@@ -112,19 +100,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOLINA_98_E5)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOLINA_98_E5
             }
             command("gasolina98E10") {
                 bot.sendMessage(
@@ -134,19 +110,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOLINA_98_E10)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOLINA_98_E10
             }
             command("gasoilA") {
                 bot.sendMessage(
@@ -156,19 +120,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOIL_A)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOIL_A
             }
             command("gasoilB") {
                 bot.sendMessage(
@@ -178,19 +130,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOIL_B)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOIL_B
             }
             command("gasoilPremium") {
                 bot.sendMessage(
@@ -200,19 +140,7 @@ class TelegramBot {
                         """.trimIndent(),
                     MARKDOWN
                 )
-                location {
-                    getNearGasStations(location.latitude, location.longitude, GASOIL_PREMIUM)
-                        .forEach { gasStation ->
-                            bot.sendMessage(
-                                fromId(message.chat.id), text = gasStation.formatted()
-                            )
-                            bot.sendLocation(
-                                fromId(message.chat.id),
-                                gasStation.latitude().toFloat(),
-                                gasStation.longitude().toFloat()
-                            )
-                        }
-                }
+                gasType = GASOIL_PREMIUM
             }
         }
     }.startPolling()
