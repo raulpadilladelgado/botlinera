@@ -16,7 +16,7 @@ class NearGasStationShould {
         val gasStationsPersister = mockk<GastStationPersister>()
         val expectedGasStations = multipleGasStationsWithinAFiveKilometersRadius()
         every { gasStationsPersister.queryNearGasStations(any(), GASOLINA_95_E5) } returns expectedGasStations
-        val gasStations = NearGasStation(gasStationsPersister).execute(coordinates, GASOLINA_98_E5)
+        val gasStations = NearGasStation(gasStationsPersister).execute(coordinates, GASOLINA_95_E5)
         assertEquals(expectedGasStations, gasStations)
     }
 }
