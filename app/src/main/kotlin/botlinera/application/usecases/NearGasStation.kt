@@ -8,9 +8,9 @@ import botlinera.domain.valueobject.GasType
 class NearGasStation(
     private val gasStationRepository: GastStationPersister
 ) {
-    fun execute(coordinates: Coordinates, gasType: GasType): List<GasStation> {
+    fun execute(coordinates: Coordinates, maximumDistanceInMeters: Int, gasType: GasType): List<GasStation> {
         return gasStationRepository.queryNearGasStations(
-            coordinates.calculateMaximumCoordinates(),
+            coordinates.calculateMaximumCoordinates(maximumDistanceInMeters),
             gasType
         )
     }

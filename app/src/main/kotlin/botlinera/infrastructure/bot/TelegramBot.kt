@@ -14,6 +14,7 @@ import com.github.kotlintelegrambot.dispatcher.location
 import com.github.kotlintelegrambot.dispatcher.text
 import com.github.kotlintelegrambot.entities.ChatId.Companion.fromId
 import com.github.kotlintelegrambot.entities.ParseMode.MARKDOWN
+import com.github.kotlintelegrambot.entities.keyboard.KeyboardButton
 import java.lang.System.getenv
 
 class TelegramBot {
@@ -24,25 +25,32 @@ class TelegramBot {
     private fun initBot() = bot {
         token = getenv("TELEGRAM_BOT_TOKEN")
         var gasType = GASOLINA_95_E5
+        var maximumDistanceInMeters = 5000
         dispatch {
             text {
                 if (text !in commands) {
                     bot.sendMessage(
                         fromId(message.chat.id),
-                        text = BotMessages.unknowMessage(gasType),
+                        text = BotMessages.unknowMessage(gasType, maximumDistanceInMeters),
                         MARKDOWN
                     )
                 }
             }
+            KeyboardButton("Pasame tu location ahí", requestLocation = true)
             location {
-                val nearGasStations = getNearGasStations(location.latitude, location.longitude, gasType)
+                val nearGasStations = getNearGasStations(
+                    location.latitude,
+                    location.longitude,
+                    maximumDistanceInMeters,
+                    gasType
+                )
                 if (nearGasStations.isEmpty()) {
                     bot.sendMessage(
-                        fromId(message.chat.id), text = BotMessages.notGasStationsFound(gasType)
+                        fromId(message.chat.id), text = BotMessages.notGasStationsFound(gasType, maximumDistanceInMeters)
                     )
                 } else {
                     bot.sendMessage(
-                        fromId(message.chat.id), text = BotMessages.showingGasStations(gasType)
+                        fromId(message.chat.id), text = BotMessages.showingGasStations(gasType, maximumDistanceInMeters)
                     )
                     nearGasStations
                         .forEach { gasStation ->
@@ -61,7 +69,7 @@ class TelegramBot {
                 gasType = GASOLINA_95_E5
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = BotMessages.welcoming(gasType),
+                    text = BotMessages.welcoming(gasType, maximumDistanceInMeters),
                     MARKDOWN
                 )
             }
@@ -69,7 +77,7 @@ class TelegramBot {
                 gasType = GASOLINA_95_E5
                 bot.sendMessage(
                     fromId(message.chat.id),
-                    text = BotMessages.welcoming(gasType),
+                    text = BotMessages.welcoming(gasType, maximumDistanceInMeters),
                     MARKDOWN
                 )
             }
@@ -137,13 +145,38 @@ class TelegramBot {
                     MARKDOWN
                 )
             }
+            command("distancia_5") {
+                maximumDistanceInMeters = 5000
+                bot.sendMessage(
+                    fromId(message.chat.id),
+                    text = BotMessages.chosenDistance(maximumDistanceInMeters),
+                    MARKDOWN
+                )
+            }
+            command("distancia_10") {
+                maximumDistanceInMeters = 10000
+                bot.sendMessage(
+                    fromId(message.chat.id),
+                    text = BotMessages.chosenDistance(maximumDistanceInMeters),
+                    MARKDOWN
+                )
+            }
+            command("distancia_20") {
+                maximumDistanceInMeters = 20000
+                bot.sendMessage(
+                    fromId(message.chat.id),
+                    text = BotMessages.chosenDistance(maximumDistanceInMeters),
+                    MARKDOWN
+                )
+            }
         }
     }.startPolling()
 
-    private fun getNearGasStations(latitude: Float, longitude: Float, gasType: GasType): List<GasStation> {
+    private fun getNearGasStations(latitude: Float, longitude: Float, maximumDistanceInMeters: Int, gasType: GasType): List<GasStation> {
         val gasStationPersister = GastStationPersisterMongo(getenv("DATABASE_URL"))
         return NearGasStation(gasStationPersister).execute(
             Coordinates(latitude.toDouble(), longitude.toDouble()),
+            maximumDistanceInMeters,
             gasType
         )
     }
@@ -158,6 +191,9 @@ class TelegramBot {
         "/gasolina_98_e10",
         "/gasoil_a",
         "/gasoil_b",
-        "/gasoil_premium"
+        "/gasoil_premium",
+        "/distancia_5",
+        "/distancia_10",
+        "/distancia_20"
     )
 }
