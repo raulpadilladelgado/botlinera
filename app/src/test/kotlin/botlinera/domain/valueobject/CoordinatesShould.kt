@@ -7,8 +7,9 @@ class CoordinatesShould {
     @Test
     fun calculateMaximumCoordinates() {
         val coordinates = Coordinates("28.0427319".toDouble(), "-16.7116703".toDouble())
+        val maximumDistanceInMeters = 5000
 
-        val maximumCoordinates = coordinates.calculateMaximumCoordinates()
+        val maximumCoordinates = coordinates.calculateMaximumCoordinates(maximumDistanceInMeters)
 
         val expectedMaximumCoordinates = MaximumCoordinates(
             "27.997816135794025".toDouble(),

@@ -1,8 +1,11 @@
 package botlinera.infrastucture.adapters
 
+import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
+import botlinera.infrastructure.adapters.GastStationPersisterMongo
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
+import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import org.junit.Before
 import org.junit.Test
@@ -12,36 +15,23 @@ import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
 import kotlin.Double.Companion.NaN
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 
-class GastStationPersisterMongoShould {
+class GastStationPersisterMongoShould() {
     private val mongoDBContainer: MongoDBContainer = MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
         .withExposedPorts(27017)
+    private lateinit var client: MongoClient
+    private lateinit var database: MongoDatabase
+    private lateinit var collection: MongoCollection<GasStationDto>
+
 
     @Before
     fun setUp() {
         mongoDBContainer.start()
-        val client: MongoClient = KMongo.createClient(mongoDBContainer.replicaSetUrl)
-        val database: MongoDatabase = client.getDatabase("botlinera")
-        val collection = database.getCollectionOfName<GasStationDto>("gas_stations")
+        client = KMongo.createClient(mongoDBContainer.replicaSetUrl)
+        database = client.getDatabase("botlinera")
+        collection = database.getCollectionOfName("gas_stations")
         collection.insertMany(multipleGasStationsDtosWithinAFiveKilometersRadius())
-    }
-
-    @Test
-    fun searchForNearestGasStationByMaximumCoordinates() {
-        val maximumSouthCoordinate = "27.997816135794025".toDouble()
-        val maximumNorthCoordinate = "28.087647664205974".toDouble()
-        val maximumWestCoordinate = "-16.762560744378813".toDouble()
-        val maximumEastCoordinate = "-16.66077985562119".toDouble()
-        val coordinates = MaximumCoordinates(
-            maximumSouthCoordinate,
-            maximumNorthCoordinate,
-            maximumWestCoordinate,
-            maximumEastCoordinate
-        )
-        val gasStations = GastStationPersisterMongo(mongoDBContainer.replicaSetUrl).queryNearGasStations(coordinates)
-        assertTrue(gasStations.size == 2)
     }
 
     @Test
@@ -56,14 +46,159 @@ class GastStationPersisterMongoShould {
             maximumWestCoordinate,
             maximumEastCoordinate
         )
-
-        val gasStations = GastStationPersisterMongo(mongoDBContainer.replicaSetUrl).queryNearGasStations(coordinates)
-
-        assertEquals(gasStations[0].prices.gas95.e5, 1.138)
-        assertEquals(gasStations[1].prices.gas95.e5, 1.238)
-        assertEquals(gasStations[2].prices.gas95.e5, 1.538)
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOLINA_95_E5)
         assertEquals(3, gasStations.size)
+        assertEquals("GasStation6", gasStations[0].name)
+        assertEquals("GasStation4", gasStations[1].name)
+        assertEquals("GasStation1", gasStations[2].name)
 
+    }
+
+    @Test
+    fun `Search for nearest gas station ordered by gas95E10 ascendant and limited to 3`() {
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOLINA_95_E10)
+        assertEquals(3, gasStations.size)
+        assertEquals("GasStation4", gasStations[0].name)
+        assertEquals("GasStation6", gasStations[1].name)
+        assertEquals("GasStation1", gasStations[2].name)
+    }
+
+    @Test
+    fun `Search for nearest gas station ordered by gas95Premium ascendant and limited to 3`() {
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOLINA_95_E5_PREMIUM)
+        assertEquals(3, gasStations.size)
+        assertEquals("GasStation1", gasStations[0].name)
+        assertEquals("GasStation4", gasStations[1].name)
+        assertEquals("GasStation6", gasStations[2].name)
+    }
+
+    @Test
+    fun `Search for nearest gas station ordered by gas98E5 ascendant and limited to 3`() {
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOLINA_98_E5)
+        assertEquals(3, gasStations.size)
+        assertEquals("GasStation1", gasStations[0].name)
+        assertEquals("GasStation6", gasStations[1].name)
+        assertEquals("GasStation4", gasStations[2].name)
+    }
+
+    @Test
+    fun `Search for nearest gas station ordered by gas98E10 ascendant and limited to 3`() {
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOLINA_98_E10)
+        assertEquals(3, gasStations.size)
+        assertEquals("GasStation4", gasStations[0].name)
+        assertEquals("GasStation1", gasStations[1].name)
+        assertEquals("GasStation6", gasStations[2].name)
+    }
+
+    @Test
+    fun `Search for nearest gas station ordered by gasoilA ascendant and limited to 3`() {
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOIL_A)
+        assertEquals(3, gasStations.size)
+        assertEquals("GasStation6", gasStations[0].name)
+        assertEquals("GasStation1", gasStations[1].name)
+        assertEquals("GasStation4", gasStations[2].name)
+    }
+
+    @Test
+    fun `Search for nearest gas station ordered by gasoilB ascendant and limited to 3`() {
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOIL_B)
+        assertEquals(2, gasStations.size)
+        assertEquals("GasStation1", gasStations[0].name)
+        assertEquals("GasStation6", gasStations[1].name)
+    }
+
+    @Test
+    fun `Search for nearest gas station ordered by gasoilPremium ascendant and limited to 3`() {
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val gasStations =
+            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+                .queryNearGasStations(coordinates, GASOIL_PREMIUM)
+        assertEquals(2, gasStations.size)
+        assertEquals("GasStation6", gasStations[0].name)
+        assertEquals("GasStation1", gasStations[1].name)
     }
 
     private fun multipleGasStationsDtosWithinAFiveKilometersRadius(): List<GasStationDto> {
@@ -76,16 +211,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -16.737889,
                 "Adeje",
-                NaN,
+                1.30,
                 1.538,
-                NaN,
-                NaN,
-                NaN,
+                1.10,
+                1.20,
+                1.10,
                 "GasStation1",
                 "GasStation1",
-                NaN,
-                NaN,
-                NaN
+                1.20,
+                1.10,
+                1.20
             ),
             GasStationDto(
                 "38660",
@@ -133,14 +268,14 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -16.714611,
                 "Adeje",
-                NaN,
+                1.10,
                 1.238,
-                NaN,
-                NaN,
-                NaN,
+                1.20,
+                1.10,
+                1.30,
                 "GasStation4",
                 "GasStation4",
-                NaN,
+                1.30,
                 NaN,
                 NaN
             ),
@@ -173,16 +308,16 @@ class GastStationPersisterMongoShould {
                 "SANTA CRUZ DE TENERIFE",
                 -1.714611,
                 "Adeje",
-                NaN,
+                1.20,
                 1.138,
-                NaN,
-                NaN,
-                NaN,
+                1.30,
+                1.30,
+                1.20,
                 "GasStation6",
                 "GasStation6",
-                NaN,
-                NaN,
-                NaN
+                1.10,
+                1.20,
+                1.10
             )
 
         )
