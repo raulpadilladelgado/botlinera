@@ -22,12 +22,17 @@ class BotMessages {
 
         fun notGasStationsFound(gasType: GasType): String {
             return """
-                            Lo siento, no he podido encontrar gasolineras que vendan ${gasType.printableName} en un radio aproximado de 5 kilómetros
-                            
-                            Inténtalo en otro momento o contacta con los que me programaron 
-                            @RaulPadillaDelgado (https://raulpadilladelgado.github.io/)
-                            iaimans (iaimans@protonmail.com)
+                        Lo siento, no hay gasolineras que vendan ${gasType.printableName} en un radio de 5 kilómetros 😢
+                           
                    """.trimIndent()
+        }
+
+        fun contactMessage(): String {
+            return """
+                        Puedes contactar con los que me programaron, intentarán responderte lo antes posible 😀
+                        💬 @RaulPadillaDelgado (https://raulpadilladelgado.github.io/)
+                        💬 iaimans (iaimans@protonmail.com)
+            """.trimIndent()
         }
 
         fun showingGasStations(gasType: GasType): String {

@@ -7,6 +7,7 @@ import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
 import botlinera.infrastructure.adapters.GastStationPersisterMongo
 import botlinera.infrastructure.utils.BotMessages.Companion.chooseGas
+import botlinera.infrastructure.utils.BotMessages.Companion.contactMessage
 import botlinera.infrastructure.utils.BotMessages.Companion.findCheapestGasStationsButtonText
 import botlinera.infrastructure.utils.BotMessages.Companion.notGasStationsFound
 import botlinera.infrastructure.utils.BotMessages.Companion.showingGasStations
@@ -35,6 +36,8 @@ private const val START_COMMAND = "start"
 
 private const val HELP_COMMAND = "ayuda"
 
+private const val CONTACT_COMMAND = "contactar"
+
 private const val DEFAULT_DISTANCE_IN_METERS = 5000
 
 private val DEFAULT_GAS_TYPE = GASOLINA_95_E5
@@ -53,8 +56,11 @@ class TelegramBot {
             command(HELP_COMMAND) {
                 sendHelpMessage()
             }
+            command(CONTACT_COMMAND) {
+                sendContactMessage()
+            }
             text {
-                if (text !in listOf("/$START_COMMAND", "/$HELP_COMMAND")){
+                if (text !in listOf("/$START_COMMAND", "/$HELP_COMMAND", "/$CONTACT_COMMAND")){
                     sendUnknownMessage()
                 }
             }
@@ -71,6 +77,15 @@ class TelegramBot {
         bot.sendMessage(
             fromId(message.chat.id),
             text = welcoming(),
+            MARKDOWN,
+            replyMarkup = KeyboardReplyMarkup(locationButton(), resizeKeyboard = true)
+        )
+    }
+
+    private fun CommandHandlerEnvironment.sendContactMessage() {
+        bot.sendMessage(
+            fromId(message.chat.id),
+            text = contactMessage(),
             MARKDOWN,
             replyMarkup = KeyboardReplyMarkup(locationButton(), resizeKeyboard = true)
         )
