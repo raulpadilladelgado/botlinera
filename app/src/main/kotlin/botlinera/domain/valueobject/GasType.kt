@@ -8,5 +8,5 @@ enum class GasType(val printableName: String) {
     GASOLINA_98_E10("Gasolina 98 E10"),
     GASOIL_A("Gasoil A"),
     GASOIL_B("Gasoil B"),
-    GASOIL_PREMIUM("Gasoil Premium")
+    GASOIL_PREMIUM("Gasoil Premium");
 }

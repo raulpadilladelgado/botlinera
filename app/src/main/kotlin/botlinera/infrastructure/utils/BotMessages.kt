@@ -1,9 +1,21 @@
 package botlinera.infrastructure.utils
 
 import botlinera.domain.valueobject.GasType
+import botlinera.domain.valueobject.UserConfiguration
 
 class BotMessages {
     companion object {
+        val gasTypesCommands = listOf(
+            "/gasolina95e5",
+            "/gasolina95e5premium",
+            "/gasolina95e10",
+            "/gasolina98e5",
+            "/gasolina98e10",
+            "/gasoila",
+            "/gasoilb",
+            "/gasoilpremium"
+        )
+
         fun welcoming(actualGasType: String, actualDistance: Int): String {
             return """
                         ¡Hola! Me llamo *Botlinera* 🤖⛽️ y estoy aquí para ayudarte a ahorrar dinero 💸.
@@ -22,16 +34,16 @@ class BotMessages {
                         /gasoil_premium -> Gasoil Premium
                    """.trimIndent()
         }
-        fun unknowMessage(actualGasType: String, actualDistance: Int): String {
+        fun unknowMessage(userConfiguration: UserConfiguration): String {
             return """
-                        Lo siento, no entiendo lo que has escrito. Recuerda que puedes mandarme tu ubicación y te mostraré las gasolineras cercanas más baratas en función del combustible que has seleccionado ($actualGasType) y la distancia máxima aproximada de $actualDistance kilómetros
+                        Lo siento, no entiendo lo que has escrito. Recuerda que puedes mandarme tu ubicación y te mostraré las gasolineras cercanas más baratas en función del combustible que has seleccionado (${userConfiguration.gasTypePrintable()}) y la distancia máxima aproximada de ${userConfiguration.maximumDistanceInKilometers()} kilómetros
                         
                         Si necesitas ayuda usa el comando /help. Puedes pulsar sobre el comando anterior o elegirlo en el menú que hay a la izquierda del cuadro para introducir texto.
                    """.trimIndent()
         }
-        fun notGasStationsFound(actualGasType: String, actualDistance: Int): String {
+        fun notGasStationsFound(gasType: GasType): String {
             return """
-                            Lo siento, no he podido encontrar gasolineras que vendan $actualGasType en una distancia máxima aproximada de $actualDistance kilómetros
+                            Lo siento, no he podido encontrar gasolineras que vendan ${gasType.printableName} en una distancia máxima aproximada de 5 kilómetros
                             
                             Intentalo en otro momento o contacta con los que me programaron 
                             @RaulPadillaDelgado (https://raulpadilladelgado.github.io/)
@@ -44,9 +56,9 @@ class BotMessages {
                    """.trimIndent()
         }
 
-        fun showingGasStations(actualGasType: String, actualDistance: Int): String {
+        fun showingGasStations(gasType: GasType): String {
             return """
-                        Mostrando las gasolineras más baratas a una distancia máxima de $actualDistance kilómetros para el combustible elegido ($actualGasType)
+                        Mostrando las gasolineras más baratas a una distancia máxima de 5 kilómetros para el combustible elegido (${gasType.printableName})
                    """.trimIndent()
         }
 
@@ -60,12 +72,25 @@ class BotMessages {
             return "\uD83D\uDD0E Buscar gasolineras baratas"
         }
 
-        fun changeGasTypeButtonText(actualGasType: String) :String {
-            return "⛽ Cambiar combustible\n$actualGasType"
+        fun changeGasTypeButtonText() :String {
+            return "⛽ Cambiar combustible"
         }
 
-        fun changeMaximumDistanceButtonText(actualDistance: Int) :String {
-            return "\uD83D\uDEE3️ Cambiar distancia\n$actualDistance KMs"
+        fun changeMaximumDistanceButtonText() :String {
+            return "\uD83D\uDEE3️ Cambiar distancia"
+        }
+
+        fun listOfGasType(): String {
+            return """
+        Gasolina 95 E5 -> /gasolina95e5,
+        Gasolina 95 E5 Premium -> /gasolina95e5premium,
+        Gasolina 95 E10 -> /gasolina95e10,
+        Gasolina 98 E5 -> /gasolina98e5,
+        Gasolina 98 E10 -> /gasolina98e10,
+        Gasoil A -> /gasoila,
+        Gasoil B -> /gasoilb,
+        Gasoil Premium -> /gasoilpremium,
+                    """.trimIndent()
         }
     }
 }
