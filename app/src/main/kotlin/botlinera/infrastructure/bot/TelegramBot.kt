@@ -54,7 +54,9 @@ class TelegramBot {
                 sendHelpMessage()
             }
             text {
-                sendUnknownMessage()
+                if (text !in listOf("/$START_COMMAND", "/$HELP_COMMAND")){
+                    sendUnknownMessage()
+                }
             }
             location {
                 handleLocation()
