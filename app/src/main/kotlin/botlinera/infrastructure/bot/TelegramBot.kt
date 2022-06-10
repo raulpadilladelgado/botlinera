@@ -25,6 +25,7 @@ import com.github.kotlintelegrambot.dispatcher.text
 import com.github.kotlintelegrambot.entities.ChatId.Companion.fromId
 import com.github.kotlintelegrambot.entities.InlineKeyboardMarkup
 import com.github.kotlintelegrambot.entities.KeyboardReplyMarkup
+import com.github.kotlintelegrambot.entities.Message
 import com.github.kotlintelegrambot.entities.ParseMode.MARKDOWN
 import com.github.kotlintelegrambot.entities.keyboard.InlineKeyboardButton
 import com.github.kotlintelegrambot.entities.keyboard.KeyboardButton
@@ -52,14 +53,14 @@ class TelegramBot {
             command(HELP_COMMAND) {
                 sendHelpMessage()
             }
+            text {
+                sendUnknownMessage()
+            }
             location {
                 handleLocation()
             }
             callbackQuery {
                 handleGasStationRequest()
-            }
-            text {
-                sendUnknownMessage()
             }
         }
     }.startPolling()
@@ -73,6 +74,15 @@ class TelegramBot {
         )
     }
 
+    private fun TextHandlerEnvironment.sendUnknownMessage() {
+        bot.sendMessage(
+            fromId(message.chat.id),
+            text = unknownMessage(),
+            MARKDOWN,
+            replyMarkup = KeyboardReplyMarkup(locationButton(), resizeKeyboard = true)
+        )
+    }
+
     private fun LocationHandlerEnvironment.handleLocation() {
         bot.sendMessage(
             fromId(message.chat.id),
@@ -80,15 +90,22 @@ class TelegramBot {
             replyToMessageId = message.messageId,
             replyMarkup = InlineKeyboardMarkup.create(
                 listOf(
-                    InlineKeyboardButton.CallbackData(GASOLINA_95_E5.printableName,  GASOLINA_95_E5.name),
-                    InlineKeyboardButton.CallbackData(GASOLINA_95_E5_PREMIUM.printableName, GASOLINA_95_E5_PREMIUM.name),
-                    InlineKeyboardButton.CallbackData(GASOLINA_95_E10.printableName, GASOLINA_95_E10.name),
-                    InlineKeyboardButton.CallbackData(GASOLINA_98_E5.printableName, GASOLINA_98_E5.name),
-                    InlineKeyboardButton.CallbackData(GASOLINA_98_E10.printableName, GASOLINA_98_E10.name),
-                    InlineKeyboardButton.CallbackData(GASOIL_A.printableName, GASOIL_A.name),
-                    InlineKeyboardButton.CallbackData(GASOIL_B.printableName, GASOIL_B.name),
-                    InlineKeyboardButton.CallbackData(GASOIL_PREMIUM.printableName, GASOIL_PREMIUM.name),
-
+                    listOf(
+                        InlineKeyboardButton.CallbackData(GASOLINA_95_E5.printableName,  GASOLINA_95_E5.name),
+                        InlineKeyboardButton.CallbackData(GASOLINA_98_E5.printableName, GASOLINA_98_E5.name),
+                    ),
+                    listOf(
+                        InlineKeyboardButton.CallbackData(GASOLINA_95_E10.printableName, GASOLINA_95_E10.name),
+                        InlineKeyboardButton.CallbackData(GASOLINA_98_E10.printableName, GASOLINA_98_E10.name),
+                    ),
+                    listOf(
+                        InlineKeyboardButton.CallbackData(GASOIL_A.printableName, GASOIL_A.name),
+                        InlineKeyboardButton.CallbackData(GASOLINA_95_E5_PREMIUM.printableName, GASOLINA_95_E5_PREMIUM.name),
+                    ),
+                    listOf(
+                        InlineKeyboardButton.CallbackData(GASOIL_B.printableName, GASOIL_B.name),
+                        InlineKeyboardButton.CallbackData(GASOIL_PREMIUM.printableName, GASOIL_PREMIUM.name)
+                    )
                 )
             )
         )
@@ -116,17 +133,16 @@ class TelegramBot {
                 fromId(message.chat.id),
                 text = showingGasStations(gasType)
             )
-            nearGasStations
-                .forEach { gasStation ->
-                    bot.sendMessage(
-                        fromId(message.chat.id), text = gasStation.formatted()
-                    )
-                    bot.sendLocation(
-                        fromId(message.chat.id),
-                        gasStation.latitude().toFloat(),
-                        gasStation.longitude().toFloat()
-                    )
-                }
+            nearGasStations.forEach { gasStation ->
+                bot.sendMessage(
+                    fromId(message.chat.id), text = gasStation.formatted()
+                )
+                bot.sendLocation(
+                    fromId(message.chat.id),
+                    gasStation.latitude().toFloat(),
+                    gasStation.longitude().toFloat()
+                )
+            }
         }
     }
 
@@ -152,12 +168,4 @@ class TelegramBot {
     }
 
 
-    private fun TextHandlerEnvironment.sendUnknownMessage() {
-        bot.sendMessage(
-            fromId(message.chat.id),
-            text = unknownMessage(),
-            MARKDOWN,
-            replyMarkup = KeyboardReplyMarkup(locationButton(), resizeKeyboard = true)
-        )
-    }
 }
