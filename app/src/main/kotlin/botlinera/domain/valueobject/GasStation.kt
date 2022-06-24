@@ -16,6 +16,7 @@ class GasStation(
     fun formatted(): String {
         return buildString {
             append("⛽️ $name\n")
+            append("🌍 ${location.municipality}\n")
             append("🕐 ${location.time}")
             append(prices.formatted())
         }
