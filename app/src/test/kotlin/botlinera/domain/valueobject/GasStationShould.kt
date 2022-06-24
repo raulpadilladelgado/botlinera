@@ -46,8 +46,8 @@ class GasStationShould {
 
         val expectedFormattedMessage = """
             ⛽️ GasStation1
-            🕐 L-D: 08:00-17:30
             🌍 Adeje
+            🕐 L-D: 08:00-17:30
             💶 Precio Gasolina
              - 95 E10: 1.879€
              - 95 E5 Premium: 1.465€
