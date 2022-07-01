@@ -1,6 +1,6 @@
 package botlinera.application.usecases
 
-import botlinera.application.ports.GastStationPersister
+import botlinera.application.ports.GasStationPersister
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
 import botlinera.domain.valueobject.*
 import botlinera.domain.valueobject.GasType.*
@@ -14,7 +14,7 @@ class NearGasStationShould {
     fun getNearGasStations() {
         val coordinates = Coordinates("28.0427319".toDouble(), "-16.7116703".toDouble())
         val maximumDistanceInMeters = 5000
-        val gasStationsPersister = mockk<GastStationPersister>()
+        val gasStationsPersister = mockk<GasStationPersister>()
         val expectedGasStations = multipleGasStationsWithinAFiveKilometersRadius()
         every { gasStationsPersister.queryNearGasStations(any(), GASOLINA_95_E5) } returns expectedGasStations
         val gasStations = NearGasStation(gasStationsPersister).execute(

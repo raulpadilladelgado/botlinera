@@ -2,7 +2,7 @@ package botlinera.infrastucture.adapters
 
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
-import botlinera.infrastructure.adapters.GastStationPersisterMongo
+import botlinera.infrastructure.adapters.GasStationPersisterMongo
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
@@ -17,7 +17,7 @@ import org.testcontainers.utility.DockerImageName
 import kotlin.Double.Companion.NaN
 
 
-class GastStationPersisterMongoShould() {
+class GasStationPersisterMongoShould() {
     private val mongoDBContainer: MongoDBContainer = MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
         .withExposedPorts(27017)
     private lateinit var client: MongoClient
@@ -47,7 +47,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_95_E5)
         assertEquals(3, gasStations.size)
         assertEquals("GasStation6", gasStations[0].name)
@@ -69,7 +69,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_95_E10)
         assertEquals(3, gasStations.size)
         assertEquals("GasStation4", gasStations[0].name)
@@ -90,7 +90,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_95_E5_PREMIUM)
         assertEquals(3, gasStations.size)
         assertEquals("GasStation1", gasStations[0].name)
@@ -111,7 +111,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_98_E5)
         assertEquals(3, gasStations.size)
         assertEquals("GasStation1", gasStations[0].name)
@@ -132,7 +132,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_98_E10)
         assertEquals(3, gasStations.size)
         assertEquals("GasStation4", gasStations[0].name)
@@ -153,7 +153,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOIL_A)
         assertEquals(3, gasStations.size)
         assertEquals("GasStation6", gasStations[0].name)
@@ -174,7 +174,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOIL_B)
         assertEquals(2, gasStations.size)
         assertEquals("GasStation1", gasStations[0].name)
@@ -194,7 +194,7 @@ class GastStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GastStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOIL_PREMIUM)
         assertEquals(2, gasStations.size)
         assertEquals("GasStation6", gasStations[0].name)

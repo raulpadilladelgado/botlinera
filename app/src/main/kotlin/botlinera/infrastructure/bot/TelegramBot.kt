@@ -5,7 +5,7 @@ import botlinera.domain.valueobject.Coordinates
 import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
-import botlinera.infrastructure.adapters.GastStationPersisterMongo
+import botlinera.infrastructure.adapters.GasStationPersisterMongo
 import botlinera.infrastructure.utils.BotMessages.Companion.chooseGas
 import botlinera.infrastructure.utils.BotMessages.Companion.contactMessage
 import botlinera.infrastructure.utils.BotMessages.Companion.findCheapestGasStationsButtonText
@@ -26,7 +26,6 @@ import com.github.kotlintelegrambot.dispatcher.text
 import com.github.kotlintelegrambot.entities.ChatId.Companion.fromId
 import com.github.kotlintelegrambot.entities.InlineKeyboardMarkup
 import com.github.kotlintelegrambot.entities.KeyboardReplyMarkup
-import com.github.kotlintelegrambot.entities.Message
 import com.github.kotlintelegrambot.entities.ParseMode.MARKDOWN
 import com.github.kotlintelegrambot.entities.keyboard.InlineKeyboardButton
 import com.github.kotlintelegrambot.entities.keyboard.KeyboardButton
@@ -176,7 +175,7 @@ class TelegramBot {
         maximumDistanceInMeters: Int = DEFAULT_DISTANCE_IN_METERS,
         gasType: GasType = DEFAULT_GAS_TYPE
     ): List<GasStation> {
-        val gasStationPersister = GastStationPersisterMongo(getenv("DATABASE_URL"))
+        val gasStationPersister = GasStationPersisterMongo(getenv("DATABASE_URL"))
         return NearGasStation(gasStationPersister).execute(
             Coordinates(latitude.toDouble(), longitude.toDouble()),
             maximumDistanceInMeters,

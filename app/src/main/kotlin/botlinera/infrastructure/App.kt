@@ -8,11 +8,11 @@ import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernme
 import botlinera.infrastructure.bot.TelegramBot
 import botlinera.infrastructure.schedulers.GasStationScheduler
 import botlinera.infrastructure.utils.URLWrapper
-import botlinera.infrastructure.adapters.GastStationPersisterMongo
+import botlinera.infrastructure.adapters.GasStationPersisterMongo
 
 
 fun main() {
-    val gasStationPersister = GastStationPersisterMongo(System.getenv("DATABASE_URL"))
+    val gasStationPersister = GasStationPersisterMongo(System.getenv("DATABASE_URL"))
 
     GasStationScheduler().start {
         UpdateGasStations(

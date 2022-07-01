@@ -1,7 +1,7 @@
 package botlinera.infrastructure.adapters
 
 import botlinera.application.exceptions.FailedToReplaceGasStations
-import botlinera.application.ports.GastStationPersister
+import botlinera.application.ports.GasStationPersister
 import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
@@ -21,7 +21,7 @@ private const val ASCENDANT_ORDER = 1
 
 private const val MAX_GAS_STATIONS_TO_RETRIEVE = 3
 
-class GastStationPersisterMongo(url: String) : GastStationPersister {
+class GasStationPersisterMongo(url: String) : GasStationPersister {
     private val client: MongoClient = KMongo.createClient(url)
     private val database: MongoDatabase = client.getDatabase("botlinera")
     private val collection = database.getCollectionOfName<GasStationDto>("gas_stations")

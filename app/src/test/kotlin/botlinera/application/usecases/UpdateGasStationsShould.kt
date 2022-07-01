@@ -3,7 +3,7 @@ package botlinera.application.usecases
 import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.application.exceptions.FailedToRetrieveGasStations
 import botlinera.application.ports.GasStationsRetriever
-import botlinera.application.ports.GastStationPersister
+import botlinera.application.ports.GasStationPersister
 import botlinera.domain.fixtures.dtos.GasStationDtoFixtures.Companion.someGasStationsDto
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -20,7 +20,7 @@ class UpdateGasStationsShould {
     @MockK
     private lateinit var gasStationsRetriever: GasStationsRetriever
     @RelaxedMockK
-    private lateinit var gasStationsPersister: GastStationPersister
+    private lateinit var gasStationsPersister: GasStationPersister
     private lateinit var updateGasStations: UpdateGasStations
     private val someGasStationsDto = someGasStationsDto()
 
