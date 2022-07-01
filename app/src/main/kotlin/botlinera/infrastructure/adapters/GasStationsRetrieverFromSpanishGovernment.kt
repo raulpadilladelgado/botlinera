@@ -1,5 +1,6 @@
 package botlinera.infrastructure.adapters
 
+import botlinera.application.exceptions.FailedToRetrieveGasStations
 import botlinera.application.ports.GasStationsRetriever
 import botlinera.infrastructure.dtos.GasStationDto
 import botlinera.infrastructure.dtos.RetrieverResponseDto
@@ -15,14 +16,18 @@ private const val GAS_STATIONS_SOURCE =
     "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
 
 class GasStationsRetrieverFromSpanishGovernment(private val url: URLWrapper) : GasStationsRetriever {
-    override fun apply(): Result<List<GasStationDto>> {
+    override fun apply() = runCatching {
+        val gasStationInfoJson = url.get(GAS_STATIONS_SOURCE)
+        extractPricesFrom(gasStationInfoJson)
+    }.onFailure {
+        throw FailedToRetrieveGasStations(it)
+    }
+
+    private fun extractPricesFrom(gasStationInfoJson: String): ArrayList<GasStationDto> {
         val builder = GsonBuilder()
         builder.registerTypeAdapter(Double::class.java, DoubleAdapter())
         val gson = builder.create()
-        val gasStationInfoJson = url.get(GAS_STATIONS_SOURCE)
-        return Result.success(gson
-            .fromJson(gasStationInfoJson, RetrieverResponseDto::class.java)
-            .prices)
+        return gson.fromJson(gasStationInfoJson, RetrieverResponseDto::class.java).prices
     }
 
     internal class DoubleAdapter : TypeAdapter<Double?>() {

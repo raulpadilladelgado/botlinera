@@ -1,6 +1,5 @@
 package botlinera.application.usecases
 
-import botlinera.application.exceptions.FailedToRetrieveGasStations
 import botlinera.application.ports.GasStationsRetriever
 import botlinera.application.ports.GastStationPersister
 
@@ -15,7 +14,7 @@ class UpdateGasStations(
                 gasStationPersister.save(it)
             }
             .onFailure {
-                throw FailedToRetrieveGasStations(it)
+                throw it
             }
     }
 }
