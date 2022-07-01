@@ -7,8 +7,8 @@ import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
-import org.junit.Before
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollectionOfName
@@ -25,7 +25,7 @@ class GastStationPersisterMongoShould() {
     private lateinit var collection: MongoCollection<GasStationDto>
 
 
-    @Before
+    @BeforeEach
     fun setUp() {
         mongoDBContainer.start()
         client = KMongo.createClient(mongoDBContainer.replicaSetUrl)

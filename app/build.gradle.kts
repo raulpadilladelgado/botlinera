@@ -26,3 +26,7 @@ dependencies {
 application {
     mainClass.set("botlinera.infrastructure.AppKt")
 }
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
