@@ -5,11 +5,6 @@ plugins {
     application
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
@@ -31,8 +26,3 @@ dependencies {
 application {
     mainClass.set("botlinera.infrastructure.AppKt")
 }
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
