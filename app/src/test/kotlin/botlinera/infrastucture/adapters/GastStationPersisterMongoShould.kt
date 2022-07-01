@@ -8,13 +8,13 @@ import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollectionOfName
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
 import kotlin.Double.Companion.NaN
-import kotlin.test.assertEquals
 
 
 class GastStationPersisterMongoShould() {

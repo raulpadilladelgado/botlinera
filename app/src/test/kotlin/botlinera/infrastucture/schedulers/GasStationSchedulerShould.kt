@@ -4,7 +4,7 @@ import botlinera.application.usecases.UpdateGasStations
 import botlinera.infrastructure.schedulers.GasStationScheduler
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class GasStationSchedulerShould {
     @Test

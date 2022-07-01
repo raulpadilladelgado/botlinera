@@ -15,14 +15,14 @@ private const val GAS_STATIONS_SOURCE =
     "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
 
 class GasStationsRetrieverFromSpanishGovernment(private val url: URLWrapper) : GasStationsRetriever {
-    override fun apply(): List<GasStationDto> {
+    override fun apply(): Result<List<GasStationDto>> {
         val builder = GsonBuilder()
         builder.registerTypeAdapter(Double::class.java, DoubleAdapter())
         val gson = builder.create()
         val gasStationInfoJson = url.get(GAS_STATIONS_SOURCE)
-        return gson
+        return Result.success(gson
             .fromJson(gasStationInfoJson, RetrieverResponseDto::class.java)
-            .prices
+            .prices)
     }
 
     internal class DoubleAdapter : TypeAdapter<Double?>() {

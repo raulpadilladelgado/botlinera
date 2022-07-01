@@ -6,8 +6,8 @@ import botlinera.domain.valueobject.*
 import botlinera.domain.valueobject.GasType.*
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 
 class NearGasStationShould {
     @Test
