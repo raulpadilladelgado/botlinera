@@ -1,5 +1,6 @@
 package botlinera.infrastructure.adapters
 
+import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.application.ports.GastStationPersister
 import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
@@ -25,12 +26,19 @@ class GastStationPersisterMongo(url: String) : GastStationPersister {
     private val database: MongoDatabase = client.getDatabase("botlinera")
     private val collection = database.getCollectionOfName<GasStationDto>("gas_stations")
 
-    override fun save(gasStationDto: List<GasStationDto>) {
-        collection.insertMany(gasStationDto)
+    override fun replace(gasStationDto: List<GasStationDto>) = runCatching {
+        removeGasStations()
+        saveGasStations(gasStationDto)
+    }.onFailure {
+        throw FailedToReplaceGasStations(it)
     }
 
-    override fun delete() {
+    private fun removeGasStations() {
         collection.deleteMany("{}")
+    }
+
+    private fun saveGasStations(gasStationDto: List<GasStationDto>) {
+        collection.insertMany(gasStationDto)
     }
 
     override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType): List<GasStation> {

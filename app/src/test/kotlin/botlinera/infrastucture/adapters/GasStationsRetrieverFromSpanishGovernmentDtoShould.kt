@@ -1,6 +1,6 @@
 package botlinera.infrastucture.adapters
 
-import botlinera.domain.fixtures.dtos.GasStationDtoFixtures.Companion.gasStation
+import botlinera.domain.fixtures.dtos.GasStationDtoFixtures.Companion.someGasStationsDto
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.utils.URLWrapper
 import io.mockk.every
@@ -24,6 +24,6 @@ class GasStationsRetrieverFromSpanishGovernmentDtoShould {
         every { requester.get(any<String>()) }.returns(file)
         val gasStationsRetrieverFromSpanishGovernment = GasStationsRetrieverFromSpanishGovernment(requester)
         val gasStationsInfo = gasStationsRetrieverFromSpanishGovernment.apply()
-        assertEquals(gasStation(), gasStationsInfo.getOrThrow())
+        assertEquals(someGasStationsDto(), gasStationsInfo.getOrThrow())
     }
 }

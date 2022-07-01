@@ -7,14 +7,10 @@ class UpdateGasStations(
     private val gasStationsRetriever: GasStationsRetriever,
     private val gasStationPersister: GastStationPersister,
 ) {
-    fun execute() {
-        gasStationsRetriever.apply()
-            .onSuccess {
-                gasStationPersister.delete()
-                gasStationPersister.save(it)
-            }
-            .onFailure {
-                throw it
-            }
+    fun execute() = runCatching {
+        val gasStations = gasStationsRetriever.apply().getOrThrow()
+        gasStationPersister.replace(gasStations).getOrThrow()
+    }.onFailure {
+        throw it
     }
 }

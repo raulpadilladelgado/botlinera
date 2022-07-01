@@ -4,7 +4,7 @@ import botlinera.infrastructure.dtos.GasStationDto
 
 class GasStationDtoFixtures {
     companion object {
-        fun gasStation(): List<GasStationDto> = listOf(
+        fun someGasStationsDto(): List<GasStationDto> = listOf(
             GasStationDto(
                 "02250",
                 "AVENIDA CASTILLA LA MANCHA, 26",

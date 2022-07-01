@@ -23,12 +23,12 @@ class GasStationsRetrieverFromSpanishGovernment(private val url: URLWrapper) : G
         throw FailedToRetrieveGasStations(it)
     }
 
-    private fun extractPricesFrom(gasStationInfoJson: String): ArrayList<GasStationDto> {
-        val builder = GsonBuilder()
-        builder.registerTypeAdapter(Double::class.java, DoubleAdapter())
-        val gson = builder.create()
-        return gson.fromJson(gasStationInfoJson, RetrieverResponseDto::class.java).prices
-    }
+    private fun extractPricesFrom(gasStationInfoJson: String): ArrayList<GasStationDto> =
+        GsonBuilder()
+            .registerTypeAdapter(Double::class.java, DoubleAdapter())
+            .create()
+            .fromJson(gasStationInfoJson, RetrieverResponseDto::class.java)
+            .prices
 
     internal class DoubleAdapter : TypeAdapter<Double?>() {
         @Throws(IOException::class)
