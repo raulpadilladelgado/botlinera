@@ -1,6 +1,6 @@
 package botlinera.domain.valueobject
 
-class GasStation(
+data class GasStation(
     val name: String,
     val location: Location,
     val prices: Prices

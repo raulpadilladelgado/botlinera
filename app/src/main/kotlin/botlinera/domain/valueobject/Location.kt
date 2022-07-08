@@ -1,6 +1,6 @@
 package botlinera.domain.valueobject
 
-class Location(
+data class Location(
     val postalCode: String,
     val address: String,
     val time: String,

@@ -1,8 +1,7 @@
 package botlinera.domain.fixtures.valueobjects
 
 import botlinera.domain.valueobject.*
-import botlinera.infrastructure.dtos.GasStationDto
-import java.lang.Double.NaN
+import kotlin.Double.Companion.NaN
 
 class GasStationFixtures {
     companion object {
@@ -121,24 +120,15 @@ class GasStationFixtures {
 
         fun aGasStation(): List<GasStation> = listOf(
             GasStation(
-                "02250",
-                Location(),
-                "AVENIDA CASTILLA LA MANCHA, 26",
-                "L-D: 07:00-22:00",
-                "39.211417".toDouble(),
-                "ABENGIBRE",
-                "-1.539167".toDouble(),
-                "Abengibre",
-                Double.NaN,
-                "1.759".toDouble(),
-                Double.NaN,
-                Double.NaN,
-                Double.NaN,
-                "ALBACETE",
                 "CEPSA",
-                "1.779".toDouble(),
-                "1.270".toDouble(),
-                Double.NaN,
+                Location(
+                    "02250", "AVENIDA CASTILLA LA MANCHA, 26", "L-D: 07:00-22:00",
+                    Coordinates(39.211417,-1.539167 ),
+                    "Abengibre",
+                    "ALBACETE",
+                    "ABENGIBRE",
+                ),
+                Prices(Gas95(NaN, 1.759, NaN), Gas98(NaN, NaN), Gasoil(1.779, 1.270, NaN))
             )
         )
     }

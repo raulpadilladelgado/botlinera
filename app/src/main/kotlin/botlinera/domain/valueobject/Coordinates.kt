@@ -3,7 +3,7 @@ package botlinera.domain.valueobject
 import java.lang.Math.PI
 import java.lang.Math.cos
 
-class Coordinates(val latitude: Double, val longitude: Double) {
+data class Coordinates(val latitude: Double, val longitude: Double) {
     fun calculateMaximumCoordinates(maximumDistanceInMeters: Int): MaximumCoordinates {
         val earth = 6378.137
         val m = (1 / ((2 * PI / 360) * earth)) / 1000
