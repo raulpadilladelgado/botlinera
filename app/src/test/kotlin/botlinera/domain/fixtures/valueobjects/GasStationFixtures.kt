@@ -1,6 +1,7 @@
 package botlinera.domain.fixtures.valueobjects
 
 import botlinera.domain.valueobject.*
+import botlinera.infrastructure.dtos.GasStationDto
 import java.lang.Double.NaN
 
 class GasStationFixtures {
@@ -14,7 +15,7 @@ class GasStationFixtures {
                         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
                         "L-D: 08:00-17:30",
                         Coordinates(48.045632, -16.737889),
-                        "Adeje", "SANTA CRUZ DE TENERIFE"
+                        "Adeje", "SANTA CRUZ DE TENERIFE", "Adeje"
                     ),
                     Prices(
                         Gas95(NaN, 1.538, NaN),
@@ -29,7 +30,7 @@ class GasStationFixtures {
                         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
                         "L-D: 08:00-17:30",
                         Coordinates(28.069, -20.7845454),
-                        "Adeje", "SANTA CRUZ DE TENERIFE"
+                        "Adeje", "SANTA CRUZ DE TENERIFE", "Adeje"
                     ),
                     Prices(
                         Gas95(NaN, 1.538, NaN),
@@ -44,7 +45,7 @@ class GasStationFixtures {
                         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
                         "L-D: 08:00-17:30",
                         Coordinates(28.011861, -16.662639),
-                        "Adeje", "SANTA CRUZ DE TENERIFE"
+                        "Adeje", "SANTA CRUZ DE TENERIFE", "Adeje"
                     ),
                     Prices(
                         Gas95(NaN, 1.538, NaN),
@@ -59,7 +60,7 @@ class GasStationFixtures {
                         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
                         "L-D: 08:00-17:30",
                         Coordinates(28.053583, -16.714611),
-                        "Adeje", "SANTA CRUZ DE TENERIFE"
+                        "Adeje", "SANTA CRUZ DE TENERIFE", "Adeje"
                     ),
                     Prices(
                         Gas95(NaN, 1.538, NaN),
@@ -74,7 +75,7 @@ class GasStationFixtures {
                         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
                         "L-D: 08:00-17:30",
                         Coordinates(5.053583, -16.714611),
-                        "Adeje", "SANTA CRUZ DE TENERIFE"
+                        "Adeje", "SANTA CRUZ DE TENERIFE", "Adeje"
                     ),
                     Prices(
                         Gas95(NaN, 1.538, NaN),
@@ -89,7 +90,7 @@ class GasStationFixtures {
                         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
                         "L-D: 08:00-17:30",
                         Coordinates(28.069, -1.714611),
-                        "Adeje", "SANTA CRUZ DE TENERIFE"
+                        "Adeje", "SANTA CRUZ DE TENERIFE", "Adeje"
                     ),
                     Prices(
                         Gas95(NaN, 1.538, NaN),
@@ -108,7 +109,7 @@ class GasStationFixtures {
                     "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
                     "L-D: 08:00-17:30",
                     Coordinates(48.045632, -16.737889),
-                    "Adeje", "SANTA CRUZ DE TENERIFE"
+                    "Adeje", "SANTA CRUZ DE TENERIFE", "Adeje"
                 ),
                 Prices(
                     gas95,
@@ -117,5 +118,28 @@ class GasStationFixtures {
                 )
             )
         }
+
+        fun aGasStation(): List<GasStation> = listOf(
+            GasStation(
+                "02250",
+                Location(),
+                "AVENIDA CASTILLA LA MANCHA, 26",
+                "L-D: 07:00-22:00",
+                "39.211417".toDouble(),
+                "ABENGIBRE",
+                "-1.539167".toDouble(),
+                "Abengibre",
+                Double.NaN,
+                "1.759".toDouble(),
+                Double.NaN,
+                Double.NaN,
+                Double.NaN,
+                "ALBACETE",
+                "CEPSA",
+                "1.779".toDouble(),
+                "1.270".toDouble(),
+                Double.NaN,
+            )
+        )
     }
 }

@@ -4,7 +4,7 @@ import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.application.exceptions.FailedToRetrieveGasStations
 import botlinera.application.ports.GasStationsRetriever
 import botlinera.application.ports.GasStationPersister
-import botlinera.domain.fixtures.dtos.GasStationDtoFixtures.Companion.someGasStationsDto
+import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
@@ -22,7 +22,7 @@ class UpdateGasStationsShould {
     @RelaxedMockK
     private lateinit var gasStationsPersister: GasStationPersister
     private lateinit var updateGasStations: UpdateGasStations
-    private val someGasStationsDto = someGasStationsDto()
+    private val someGasStations = multipleGasStationsWithinAFiveKilometersRadius()
 
     @BeforeEach
     fun setUp() {
@@ -31,12 +31,12 @@ class UpdateGasStationsShould {
 
     @Test
     internal fun `download information for gas stations`() {
-        every { gasStationsRetriever.apply() }.returns(Result.success(someGasStationsDto))
+        every { gasStationsRetriever.apply() }.returns(Result.success(someGasStations))
 
         updateGasStations.execute()
 
         verifyOrder {
-            gasStationsPersister.replace(someGasStationsDto)
+            gasStationsPersister.replace(someGasStations)
         }
     }
 
@@ -49,8 +49,8 @@ class UpdateGasStationsShould {
 
     @Test
     fun `raise an error when something fails while replacing gas stations in repository`() {
-        every { gasStationsRetriever.apply() }.returns(Result.success(someGasStationsDto))
-        every { gasStationsPersister.replace(someGasStationsDto) }.returns(Result.failure(FailedToReplaceGasStations(RuntimeException())))
+        every { gasStationsRetriever.apply() }.returns(Result.success(someGasStations))
+        every { gasStationsPersister.replace(someGasStations) }.returns(Result.failure(FailedToReplaceGasStations(RuntimeException())))
 
         assertFailsWith<FailedToReplaceGasStations> { updateGasStations.execute() }
     }

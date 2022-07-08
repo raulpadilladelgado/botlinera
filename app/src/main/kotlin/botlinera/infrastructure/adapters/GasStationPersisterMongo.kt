@@ -13,9 +13,8 @@ import org.bson.Document
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.deleteMany
 import org.litote.kmongo.getCollectionOfName
+import java.lang.Double.NaN
 import java.util.*
-import kotlin.Double.Companion.NaN
-
 
 private const val ASCENDANT_ORDER = 1
 
@@ -26,7 +25,7 @@ class GasStationPersisterMongo(url: String) : GasStationPersister {
     private val database: MongoDatabase = client.getDatabase("botlinera")
     private val collection = database.getCollectionOfName<GasStationDto>("gas_stations")
 
-    override fun replace(gasStationDto: List<GasStationDto>) = runCatching {
+    override fun replace(gasStationDto: List<GasStation>) = runCatching {
         removeGasStations()
         saveGasStations(gasStationDto)
     }.onFailure {
@@ -37,8 +36,8 @@ class GasStationPersisterMongo(url: String) : GasStationPersister {
         collection.deleteMany("{}")
     }
 
-    private fun saveGasStations(gasStationDto: List<GasStationDto>) {
-        collection.insertMany(gasStationDto)
+    private fun saveGasStations(gasStation: List<GasStation>) {
+        collection.insertMany(gasStation.map { GasStationDto.from(it) })
     }
 
     override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType): List<GasStation> {
