@@ -12,6 +12,6 @@ class NearGasStation(
         return gasStationRepository.queryNearGasStations(
             coordinates.calculateMaximumCoordinates(maximumDistanceInMeters),
             gasType
-        )
+        ).getOrThrow()
     }
 }

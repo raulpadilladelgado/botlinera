@@ -40,7 +40,7 @@ class GasStationPersisterMongo(url: String) : GasStationPersister {
         collection.insertMany(gasStation.map { GasStationDto.from(it) })
     }
 
-    override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType): List<GasStation> {
+    override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType): Result<List<GasStation>> {
         val gasPriceToFilter: String = findGasPriceFilterToApplyBy(gasType)
         val query = Document(
             "\$and", Arrays.asList(
@@ -55,7 +55,7 @@ class GasStationPersisterMongo(url: String) : GasStationPersister {
         val gasPriceAscFilter = Document(gasPriceToFilter, ASCENDANT_ORDER)
         val results = mutableListOf<GasStationDto>()
         collection.find(query).sort(gasPriceAscFilter).limit(MAX_GAS_STATIONS_TO_RETRIEVE).into(results)
-        return results.map { gasStationDto -> gasStationDto.toDomain() }
+        return Result.success(results.map { gasStationDto -> gasStationDto.toDomain() })
     }
 
     private fun findGasPriceFilterToApplyBy(gasType: GasType): String {

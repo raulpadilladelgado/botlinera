@@ -11,7 +11,5 @@ class UpdateGasStations(
     fun execute() = runCatching {
         val gasStations: List<GasStation> = gasStationsRetriever.apply().getOrThrow()
         gasStationPersister.replace(gasStations).getOrThrow()
-    }.onFailure {
-        throw it
-    }
+    }.onFailure { throw it }
 }

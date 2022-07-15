@@ -153,6 +153,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_95_E5)
+                .getOrThrow()
         assertEquals(3, gasStations.size)
         assertEquals("GasStation6", gasStations[0].name)
         assertEquals("GasStation4", gasStations[1].name)
@@ -175,6 +176,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_95_E10)
+                .getOrThrow()
         assertEquals(3, gasStations.size)
         assertEquals("GasStation4", gasStations[0].name)
         assertEquals("GasStation6", gasStations[1].name)
@@ -196,6 +198,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_95_E5_PREMIUM)
+                .getOrThrow()
         assertEquals(3, gasStations.size)
         assertEquals("GasStation1", gasStations[0].name)
         assertEquals("GasStation4", gasStations[1].name)
@@ -217,6 +220,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_98_E5)
+                .getOrThrow()
         assertEquals(3, gasStations.size)
         assertEquals("GasStation1", gasStations[0].name)
         assertEquals("GasStation6", gasStations[1].name)
@@ -238,6 +242,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOLINA_98_E10)
+                .getOrThrow()
         assertEquals(3, gasStations.size)
         assertEquals("GasStation4", gasStations[0].name)
         assertEquals("GasStation1", gasStations[1].name)
@@ -259,6 +264,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOIL_A)
+                .getOrThrow()
         assertEquals(3, gasStations.size)
         assertEquals("GasStation6", gasStations[0].name)
         assertEquals("GasStation1", gasStations[1].name)
@@ -280,6 +286,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOIL_B)
+                .getOrThrow()
         assertEquals(2, gasStations.size)
         assertEquals("GasStation1", gasStations[0].name)
         assertEquals("GasStation6", gasStations[1].name)
@@ -300,6 +307,7 @@ class GasStationPersisterMongoShould() {
         val gasStations =
             GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
                 .queryNearGasStations(coordinates, GASOIL_PREMIUM)
+                .getOrThrow()
         assertEquals(2, gasStations.size)
         assertEquals("GasStation6", gasStations[0].name)
         assertEquals("GasStation1", gasStations[1].name)
