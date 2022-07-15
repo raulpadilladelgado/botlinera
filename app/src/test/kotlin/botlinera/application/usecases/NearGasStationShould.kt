@@ -35,16 +35,4 @@ class NearGasStationShould {
         assertEquals(expectedGasStations, gasStations)
     }
 
-    @Test
-    fun `raise an error when fails retrieving near gas stations`() {
-        every { gasStationsPersister.queryNearGasStations(any(), any()) } returns Result.failure(FailedToRetrieveNearGasStations(RuntimeException()))
-
-        assertFailsWith<FailedToRetrieveNearGasStations> {
-            NearGasStation(gasStationsPersister).execute(
-                any(),
-                any(),
-                any()
-            )
-        }
-    }
 }

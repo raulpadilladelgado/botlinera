@@ -312,4 +312,5 @@ class GasStationPersisterMongoShould() {
         assertEquals("GasStation6", gasStations[0].name)
         assertEquals("GasStation1", gasStations[1].name)
     }
+
 }
