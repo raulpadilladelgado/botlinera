@@ -9,10 +9,16 @@ import botlinera.infrastructure.bot.TelegramBot
 import botlinera.infrastructure.schedulers.GasStationScheduler
 import botlinera.infrastructure.utils.URLWrapper
 import botlinera.infrastructure.adapters.GasStationPersisterMongo
+import botlinera.infrastructure.dtos.GasStationDto
+import com.mongodb.client.MongoClient
+import com.mongodb.client.MongoCollection
+import com.mongodb.client.MongoDatabase
+import org.litote.kmongo.KMongo
+import org.litote.kmongo.getCollectionOfName
 
 
 fun main() {
-    val gasStationPersister = GasStationPersisterMongo(System.getenv("DATABASE_URL"))
+    val gasStationPersister = GasStationPersisterMongo(mongoCollection())
 
     GasStationScheduler().start {
         UpdateGasStations(
@@ -21,6 +27,12 @@ fun main() {
         ).execute()
     }
     TelegramBot().startPolling()
+}
+
+private fun mongoCollection(): MongoCollection<GasStationDto> {
+    val client: MongoClient = KMongo.createClient(System.getenv("DATABASE_URL"))
+    val database: MongoDatabase = client.getDatabase("botlinera")
+    return database.getCollectionOfName<GasStationDto>("gas_stations")
 }
 
 

@@ -6,6 +6,7 @@ import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
 import botlinera.infrastructure.adapters.GasStationPersisterMongo
+import botlinera.infrastructure.dtos.GasStationDto
 import botlinera.infrastructure.utils.BotMessages.Companion.chooseGas
 import botlinera.infrastructure.utils.BotMessages.Companion.contactMessage
 import botlinera.infrastructure.utils.BotMessages.Companion.findCheapestGasStationsButtonText
@@ -29,6 +30,11 @@ import com.github.kotlintelegrambot.entities.KeyboardReplyMarkup
 import com.github.kotlintelegrambot.entities.ParseMode.MARKDOWN
 import com.github.kotlintelegrambot.entities.keyboard.InlineKeyboardButton
 import com.github.kotlintelegrambot.entities.keyboard.KeyboardButton
+import com.mongodb.client.MongoClient
+import com.mongodb.client.MongoCollection
+import com.mongodb.client.MongoDatabase
+import org.litote.kmongo.KMongo
+import org.litote.kmongo.getCollectionOfName
 import java.lang.System.getenv
 
 private const val START_COMMAND = "start"
@@ -175,12 +181,18 @@ class TelegramBot {
         maximumDistanceInMeters: Int = DEFAULT_DISTANCE_IN_METERS,
         gasType: GasType = DEFAULT_GAS_TYPE
     ): List<GasStation> {
-        val gasStationPersister = GasStationPersisterMongo(getenv("DATABASE_URL"))
+        val gasStationPersister = GasStationPersisterMongo(mongoCollection())
         return NearGasStation(gasStationPersister).execute(
             Coordinates(latitude.toDouble(), longitude.toDouble()),
             maximumDistanceInMeters,
             gasType
         )
+    }
+
+    private fun mongoCollection(): MongoCollection<GasStationDto> {
+        val client: MongoClient = KMongo.createClient(getenv("DATABASE_URL"))
+        val database: MongoDatabase = client.getDatabase("botlinera")
+        return database.getCollectionOfName<GasStationDto>("gas_stations")
     }
 
 

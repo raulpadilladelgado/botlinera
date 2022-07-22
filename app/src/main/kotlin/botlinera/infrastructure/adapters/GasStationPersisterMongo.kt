@@ -7,12 +7,9 @@ import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.dtos.GasStationDto
-import com.mongodb.client.MongoClient
-import com.mongodb.client.MongoDatabase
+import com.mongodb.client.MongoCollection
 import org.bson.Document
-import org.litote.kmongo.KMongo
 import org.litote.kmongo.deleteMany
-import org.litote.kmongo.getCollectionOfName
 import java.lang.Double.NaN
 import java.util.*
 
@@ -20,10 +17,7 @@ private const val ASCENDANT_ORDER = 1
 
 private const val MAX_GAS_STATIONS_TO_RETRIEVE = 3
 
-class GasStationPersisterMongo(url: String) : GasStationPersister {
-    private val client: MongoClient = KMongo.createClient(url)
-    private val database: MongoDatabase = client.getDatabase("botlinera")
-    private val collection = database.getCollectionOfName<GasStationDto>("gas_stations")
+class GasStationPersisterMongo(private val collection: MongoCollection<GasStationDto>) : GasStationPersister {
 
     override fun replace(gasStationDto: List<GasStation>) = runCatching {
         removeGasStations()

@@ -3,25 +3,27 @@ package botlinera.infrastucture.adapters
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.adapters.GasStationPersisterMongo
+import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
-import org.bson.Document
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.litote.kmongo.getCollectionOfName
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
 
 
 class GasStationPersisterMongoShould() {
-    private val mongoDBContainer: MongoDBContainer = MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
+    private val mongoDBContainer: MongoDBContainer = MongoDBContainer(DockerImageName.parse("mongo:5.0.0"))
         .withExposedPorts(27017)
 
     private lateinit var client: MongoClient
     private lateinit var database: MongoDatabase
-    private lateinit var collection: MongoCollection<Document>
+    private lateinit var collection: MongoCollection<GasStationDto>
+    private lateinit var gasStationPersisterMongo: GasStationPersisterMongo
 
 
     @BeforeEach
@@ -29,111 +31,120 @@ class GasStationPersisterMongoShould() {
         mongoDBContainer.start()
         client = MongoClients.create(mongoDBContainer.replicaSetUrl)
         database = client.getDatabase("botlinera")
-        collection = database.getCollection("gas_stations")
+        collection = database.getCollectionOfName("gas_stations")
+        gasStationPersisterMongo = GasStationPersisterMongo(collection)
         collection.insertMany(
             listOf(
-                Document("postalCode", "38660")
-                    .append("address", "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS")
-                    .append("time", "L-D: 08:00-17:30")
-                    .append("latitude", 48.045632)
-                    .append("locality", "SANTA CRUZ DE TENERIFE")
-                    .append("longitude", -16.737889)
-                    .append("municipality", "Adeje")
-                    .append("gas95E10Price", 1.30)
-                    .append("gas95E5Price", 1.538)
-                    .append("gas95E5PremiumPrice", 1.10)
-                    .append("gas98E10Price", 1.20)
-                    .append("gas98E5Price", 1.10)
-                    .append("province", "GasStation1")
-                    .append("name", "GasStation1")
-                    .append("gasoilA", 1.20)
-                    .append("gasoilB", 1.10)
-                    .append("gasoilPremium", 1.20),
-                Document("postalCode", "38660")
-                    .append("address", "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS")
-                    .append("time", "L-D: 08:00-17:30")
-                    .append("latitude", 28.069,)
-                    .append("locality", "SANTA CRUZ DE TENERIFE")
-                    .append("longitude", -20.7845454,)
-                    .append("municipality", "Adeje")
-                    .append("gas95E10Price", Double.NaN,)
-                    .append("gas95E5Price", 1.648,)
-                    .append("gas95E5PremiumPrice", Double.NaN,)
-                    .append("gas98E10Price", Double.NaN,)
-                    .append("gas98E5Price", Double.NaN,)
-                    .append("province", "GasStation2")
-                    .append("name", "GasStation2")
-                    .append("gasoilA", Double.NaN,)
-                    .append("gasoilB", Double.NaN,)
-                    .append("gasoilPremium", Double.NaN),
-                Document("postalCode", "38660")
-                    .append("address", "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS")
-                    .append("time", "L-D: 08:00-17:30")
-                    .append("latitude", 28.011861,)
-                    .append("locality", "SANTA CRUZ DE TENERIFE")
-                    .append("longitude", -16.662639,)
-                    .append("municipality", "Adeje")
-                    .append("gas95E10Price", Double.NaN,)
-                    .append("gas95E5Price", 1.648,)
-                    .append("gas95E5PremiumPrice", Double.NaN,)
-                    .append("gas98E10Price", Double.NaN,)
-                    .append("gas98E5Price", Double.NaN,)
-                    .append("province", "GasStation3")
-                    .append("name", "GasStation3")
-                    .append("gasoilA", Double.NaN,)
-                    .append("gasoilB", Double.NaN,)
-                    .append("gasoilPremium", Double.NaN),
-                Document("postalCode", "38660")
-                    .append("address", "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS")
-                    .append("time", "L-D: 08:00-17:30")
-                    .append("latitude", 28.053583,)
-                    .append("locality", "SANTA CRUZ DE TENERIFE")
-                    .append("longitude", -16.714611,)
-                    .append("municipality", "Adeje")
-                    .append("gas95E10Price", 1.10,)
-                    .append("gas95E5Price", 1.238,)
-                    .append("gas95E5PremiumPrice", 1.20,)
-                    .append("gas98E10Price", 1.10,)
-                    .append("gas98E5Price", 1.30,)
-                    .append("province", "GasStation4")
-                    .append("name", "GasStation4")
-                    .append("gasoilA", 1.30,)
-                    .append("gasoilB", Double.NaN,)
-                    .append("gasoilPremium", Double.NaN),
-                Document("postalCode", "38660")
-                    .append("address", "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS")
-                    .append("time", "L-D: 08:00-17:30")
-                    .append("latitude", 5.053583,)
-                    .append("locality", "SANTA CRUZ DE TENERIFE")
-                    .append("longitude", -16.714611,)
-                    .append("municipality", "Adeje")
-                    .append("gas95E10Price", Double.NaN,)
-                    .append("gas95E5Price", 1.938,)
-                    .append("gas95E5PremiumPrice", Double.NaN,)
-                    .append("gas98E10Price", Double.NaN,)
-                    .append("gas98E5Price", Double.NaN,)
-                    .append("province", "GasStation5")
-                    .append("name", "GasStation5")
-                    .append("gasoilA", Double.NaN,)
-                    .append("gasoilB", Double.NaN,)
-                    .append("gasoilPremium", Double.NaN),
-                Document("postalCode", "38660")
-                    .append("address", "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS")
-                    .append("time", "L-D: 08:00-17:30")
-                    .append("latitude", 28.069,)
-                    .append("locality", "SANTA CRUZ DE TENERIFE")
-                    .append("longitude", -1.714611,)
-                    .append("municipality", "Adeje")
-                    .append("gas95E10Price", 1.20,)
-                    .append("gas95E5Price", 1.138,)
-                    .append("gas95E5PremiumPrice", 1.30,)
-                    .append("gas98E10Price", 1.30,)
-                    .append("gas98E5Price", 1.20,)
-                    .append("province", "GasStation6")
-                    .append("name", "GasStation6")
-                    .append("gasoilA", 1.10,)
-                    .append("gasoilB", 1.20,)
-                    .append("gasoilPremium", 1.10)
+                GasStationDto(
+                    "38660",
+                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+                    "L-D: 08:00-17:30",
+                    48.045632,
+                    "SANTA CRUZ DE TENERIFE",
+                    -16.737889,
+                    "Adeje",
+                    1.30,
+                    1.538,
+                    1.10,
+                    1.20,
+                    1.10,
+                    "GasStation1",
+                    "GasStation1",
+                    1.20,
+                    1.10,
+                    1.20
+                ),
+                GasStationDto(
+                    "38660",
+                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+                    "L-D: 08:00-17:30",
+                    28.069,
+                    "SANTA CRUZ DE TENERIFE",
+                    -20.7845454,
+                    "Adeje",
+                    Double.NaN,
+                    1.648,
+                    Double.NaN,
+                    Double.NaN,
+                    Double.NaN,
+                    "GasStation2",
+                    "GasStation2",
+                    Double.NaN,
+                    Double.NaN,
+                    Double.NaN
+                ), GasStationDto(
+                    "38660",
+                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+                    "L-D: 08:00-17:30",
+                    28.011861,
+                    "SANTA CRUZ DE TENERIFE",
+                    -16.662639,
+                    "Adeje",
+                    Double.NaN,
+                    1.648,
+                    Double.NaN,
+                    Double.NaN,
+                    Double.NaN,
+                    "GasStation3",
+                    "GasStation3",
+                    Double.NaN,
+                    Double.NaN,
+                    Double.NaN
+                ), GasStationDto(
+                    "38660",
+                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+                    "L-D: 08:00-17:30",
+                    28.053583,
+                    "SANTA CRUZ DE TENERIFE",
+                    -16.714611,
+                    "Adeje",
+                    1.10,
+                    1.238,
+                    1.20,
+                    1.10,
+                    1.30,
+                    "GasStation4",
+                    "GasStation4",
+                    1.30,
+                    Double.NaN,
+                    Double.NaN
+                ), GasStationDto(
+                    "38660",
+                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+                    "L-D: 08:00-17:30",
+                    5.053583,
+                    "SANTA CRUZ DE TENERIFE",
+                    -16.714611,
+                    "Adeje",
+                    Double.NaN,
+                    1.938,
+                    Double.NaN,
+                    Double.NaN,
+                    Double.NaN,
+                    "GasStation5",
+                    "GasStation5",
+                    Double.NaN,
+                    Double.NaN,
+                    Double.NaN
+                ), GasStationDto(
+                    "38660",
+                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+                    "L-D: 08:00-17:30",
+                    28.069,
+                    "SANTA CRUZ DE TENERIFE",
+                    -1.714611,
+                    "Adeje",
+                    1.20,
+                    1.138,
+                    1.30,
+                    1.30,
+                    1.20,
+                    "GasStation6",
+                    "GasStation6",
+                    1.10,
+                    1.20,
+                    1.10
+                )
             )
         )
     }
@@ -151,7 +162,7 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOLINA_95_E5)
                 .getOrThrow()
         assertEquals(3, gasStations.size)
@@ -174,7 +185,7 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOLINA_95_E10)
                 .getOrThrow()
         assertEquals(3, gasStations.size)
@@ -196,7 +207,7 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOLINA_95_E5_PREMIUM)
                 .getOrThrow()
         assertEquals(3, gasStations.size)
@@ -218,7 +229,7 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOLINA_98_E5)
                 .getOrThrow()
         assertEquals(3, gasStations.size)
@@ -240,7 +251,7 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOLINA_98_E10)
                 .getOrThrow()
         assertEquals(3, gasStations.size)
@@ -262,7 +273,7 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOIL_A)
                 .getOrThrow()
         assertEquals(3, gasStations.size)
@@ -284,7 +295,7 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOIL_B)
                 .getOrThrow()
         assertEquals(2, gasStations.size)
@@ -305,12 +316,23 @@ class GasStationPersisterMongoShould() {
             maximumEastCoordinate
         )
         val gasStations =
-            GasStationPersisterMongo(mongoDBContainer.replicaSetUrl)
+            gasStationPersisterMongo
                 .queryNearGasStations(coordinates, GASOIL_PREMIUM)
                 .getOrThrow()
         assertEquals(2, gasStations.size)
         assertEquals("GasStation6", gasStations[0].name)
         assertEquals("GasStation1", gasStations[1].name)
     }
+
+//
+//    @Test
+//    fun `raise an error if something fails`() {
+//        every {  }
+//
+//        assertFailsWith<FailedToReplaceGasStations> {
+//            gasStationPersisterMongo.replace(multipleGasStationsWithinAFiveKilometersRadius())
+//
+//        }
+//    }
 
 }
