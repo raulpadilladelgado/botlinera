@@ -5,6 +5,7 @@ import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.adapters.GasStationPersisterMongo
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
+import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import org.junit.jupiter.api.BeforeEach
@@ -29,9 +30,9 @@ class GasStationPersisterMongoShould() {
     @BeforeEach
     fun setUp() {
         mongoDBContainer.start()
-        client = KMongo.createClient(mongoDBContainer.replicaSetUrl)
+        client = MongoClients.create(mongoDBContainer.replicaSetUrl)
         database = client.getDatabase("botlinera")
-        collection = database.getCollectionOfName("gas_stations")
+        collection = database.getCollectionOfName<GasStationDto>("gas_stations")
         gasStationPersisterMongo = GasStationPersisterMongo(collection)
         collection.insertMany(gasStationDtos())
     }
