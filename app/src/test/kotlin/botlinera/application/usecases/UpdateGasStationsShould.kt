@@ -2,8 +2,9 @@ package botlinera.application.usecases
 
 import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.application.exceptions.FailedToRetrieveGasStations
-import botlinera.application.ports.GasStationsRetriever
+import botlinera.application.exceptions.FailedToUpdateGasStation
 import botlinera.application.ports.GasStationPersister
+import botlinera.application.ports.GasStationsRetriever
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -41,17 +42,11 @@ class UpdateGasStationsShould {
     }
 
     @Test
-    fun `raise an error when something fails while download gas stations`() {
-        every { gasStationsRetriever.apply() }.returns(Result.failure(FailedToRetrieveGasStations(RuntimeException())))
+    fun `raise an error when something fails while`() {
+        every { gasStationsRetriever.apply() }.returns(Result.failure(RuntimeException()))
 
-        assertFailsWith<FailedToRetrieveGasStations> { updateGasStations.execute() }
+        assertFailsWith<FailedToUpdateGasStation> { updateGasStations.execute() }
     }
 
-    @Test
-    fun `raise an error when something fails while replacing gas stations in repository`() {
-        every { gasStationsRetriever.apply() }.returns(Result.success(someGasStations))
-        every { gasStationsPersister.replace(someGasStations) }.returns(Result.failure(FailedToReplaceGasStations(RuntimeException())))
 
-        assertFailsWith<FailedToReplaceGasStations> { updateGasStations.execute() }
-    }
 }
