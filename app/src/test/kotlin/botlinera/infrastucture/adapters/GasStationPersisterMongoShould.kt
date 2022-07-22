@@ -5,15 +5,15 @@ import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.adapters.GasStationPersisterMongo
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
-import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollectionOfName
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
+import kotlin.test.assertEquals
 
 
 class GasStationPersisterMongoShould() {
@@ -29,125 +29,125 @@ class GasStationPersisterMongoShould() {
     @BeforeEach
     fun setUp() {
         mongoDBContainer.start()
-        client = MongoClients.create(mongoDBContainer.replicaSetUrl)
+        client = KMongo.createClient(mongoDBContainer.replicaSetUrl)
         database = client.getDatabase("botlinera")
         collection = database.getCollectionOfName("gas_stations")
         gasStationPersisterMongo = GasStationPersisterMongo(collection)
-        collection.insertMany(
-            listOf(
-                GasStationDto(
-                    "38660",
-                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
-                    "L-D: 08:00-17:30",
-                    48.045632,
-                    "SANTA CRUZ DE TENERIFE",
-                    -16.737889,
-                    "Adeje",
-                    1.30,
-                    1.538,
-                    1.10,
-                    1.20,
-                    1.10,
-                    "GasStation1",
-                    "GasStation1",
-                    1.20,
-                    1.10,
-                    1.20
-                ),
-                GasStationDto(
-                    "38660",
-                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
-                    "L-D: 08:00-17:30",
-                    28.069,
-                    "SANTA CRUZ DE TENERIFE",
-                    -20.7845454,
-                    "Adeje",
-                    Double.NaN,
-                    1.648,
-                    Double.NaN,
-                    Double.NaN,
-                    Double.NaN,
-                    "GasStation2",
-                    "GasStation2",
-                    Double.NaN,
-                    Double.NaN,
-                    Double.NaN
-                ), GasStationDto(
-                    "38660",
-                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
-                    "L-D: 08:00-17:30",
-                    28.011861,
-                    "SANTA CRUZ DE TENERIFE",
-                    -16.662639,
-                    "Adeje",
-                    Double.NaN,
-                    1.648,
-                    Double.NaN,
-                    Double.NaN,
-                    Double.NaN,
-                    "GasStation3",
-                    "GasStation3",
-                    Double.NaN,
-                    Double.NaN,
-                    Double.NaN
-                ), GasStationDto(
-                    "38660",
-                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
-                    "L-D: 08:00-17:30",
-                    28.053583,
-                    "SANTA CRUZ DE TENERIFE",
-                    -16.714611,
-                    "Adeje",
-                    1.10,
-                    1.238,
-                    1.20,
-                    1.10,
-                    1.30,
-                    "GasStation4",
-                    "GasStation4",
-                    1.30,
-                    Double.NaN,
-                    Double.NaN
-                ), GasStationDto(
-                    "38660",
-                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
-                    "L-D: 08:00-17:30",
-                    5.053583,
-                    "SANTA CRUZ DE TENERIFE",
-                    -16.714611,
-                    "Adeje",
-                    Double.NaN,
-                    1.938,
-                    Double.NaN,
-                    Double.NaN,
-                    Double.NaN,
-                    "GasStation5",
-                    "GasStation5",
-                    Double.NaN,
-                    Double.NaN,
-                    Double.NaN
-                ), GasStationDto(
-                    "38660",
-                    "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
-                    "L-D: 08:00-17:30",
-                    28.069,
-                    "SANTA CRUZ DE TENERIFE",
-                    -1.714611,
-                    "Adeje",
-                    1.20,
-                    1.138,
-                    1.30,
-                    1.30,
-                    1.20,
-                    "GasStation6",
-                    "GasStation6",
-                    1.10,
-                    1.20,
-                    1.10
-                )
-            )
-        )
+        collection.insertMany(gasStationDtos())
     }
+
+    private fun gasStationDtos() = listOf(
+        GasStationDto(
+            "38660",
+            "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+            "L-D: 08:00-17:30",
+            48.045632,
+            "SANTA CRUZ DE TENERIFE",
+            -16.737889,
+            "Adeje",
+            1.30,
+            1.538,
+            1.10,
+            1.20,
+            1.10,
+            "GasStation1",
+            "GasStation1",
+            1.20,
+            1.10,
+            1.20
+        ),
+        GasStationDto(
+            "38660",
+            "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+            "L-D: 08:00-17:30",
+            28.069,
+            "SANTA CRUZ DE TENERIFE",
+            -20.7845454,
+            "Adeje",
+            Double.NaN,
+            1.648,
+            Double.NaN,
+            Double.NaN,
+            Double.NaN,
+            "GasStation2",
+            "GasStation2",
+            Double.NaN,
+            Double.NaN,
+            Double.NaN
+        ), GasStationDto(
+            "38660",
+            "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+            "L-D: 08:00-17:30",
+            28.011861,
+            "SANTA CRUZ DE TENERIFE",
+            -16.662639,
+            "Adeje",
+            Double.NaN,
+            1.648,
+            Double.NaN,
+            Double.NaN,
+            Double.NaN,
+            "GasStation3",
+            "GasStation3",
+            Double.NaN,
+            Double.NaN,
+            Double.NaN
+        ), GasStationDto(
+            "38660",
+            "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+            "L-D: 08:00-17:30",
+            28.053583,
+            "SANTA CRUZ DE TENERIFE",
+            -16.714611,
+            "Adeje",
+            1.10,
+            1.238,
+            1.20,
+            1.10,
+            1.30,
+            "GasStation4",
+            "GasStation4",
+            1.30,
+            Double.NaN,
+            Double.NaN
+        ), GasStationDto(
+            "38660",
+            "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+            "L-D: 08:00-17:30",
+            5.053583,
+            "SANTA CRUZ DE TENERIFE",
+            -16.714611,
+            "Adeje",
+            Double.NaN,
+            1.938,
+            Double.NaN,
+            Double.NaN,
+            Double.NaN,
+            "GasStation5",
+            "GasStation5",
+            Double.NaN,
+            Double.NaN,
+            Double.NaN
+        ), GasStationDto(
+            "38660",
+            "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
+            "L-D: 08:00-17:30",
+            28.069,
+            "SANTA CRUZ DE TENERIFE",
+            -1.714611,
+            "Adeje",
+            1.20,
+            1.138,
+            1.30,
+            1.30,
+            1.20,
+            "GasStation6",
+            "GasStation6",
+            1.10,
+            1.20,
+            1.10
+        )
+    )
 
     @Test
     fun searchForNearestGasStationOrderedByGas95E5AscAndLimit3() {

@@ -6,7 +6,7 @@ import botlinera.domain.valueobject.Coordinates
 import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 
-class NearGasStation(
+class RetrieveNearGasStation(
     private val gasStationRepository: GasStationPersister
 ) {
     fun execute(coordinates: Coordinates, maximumDistanceInMeters: Int, gasType: GasType): List<GasStation> {

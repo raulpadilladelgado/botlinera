@@ -1,6 +1,6 @@
 package botlinera.infrastructure.bot
 
-import botlinera.application.usecases.NearGasStation
+import botlinera.application.usecases.RetrieveNearGasStation
 import botlinera.domain.valueobject.Coordinates
 import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
@@ -182,7 +182,7 @@ class TelegramBot {
         gasType: GasType = DEFAULT_GAS_TYPE
     ): List<GasStation> {
         val gasStationPersister = GasStationPersisterMongo(mongoCollection())
-        return NearGasStation(gasStationPersister).execute(
+        return RetrieveNearGasStation(gasStationPersister).execute(
             Coordinates(latitude.toDouble(), longitude.toDouble()),
             maximumDistanceInMeters,
             gasType

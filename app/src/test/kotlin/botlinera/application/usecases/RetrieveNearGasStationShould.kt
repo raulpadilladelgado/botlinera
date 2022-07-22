@@ -17,16 +17,16 @@ import kotlin.test.assertFailsWith
 private const val MAXIMUM_DISTANCE_IN_METERS = 5000
 
 @ExtendWith(MockKExtension::class)
-class NearGasStationShould {
+class RetrieveNearGasStationShould {
     @MockK
     private lateinit var gasStationsPersister: GasStationPersister
 
-    private lateinit var nearGasStation: NearGasStation
+    private lateinit var retrieveNearGasStation: RetrieveNearGasStation
 
 
     @BeforeEach
     internal fun setUp() {
-        nearGasStation = NearGasStation(gasStationsPersister)
+        retrieveNearGasStation = RetrieveNearGasStation(gasStationsPersister)
     }
 
 
@@ -35,7 +35,7 @@ class NearGasStationShould {
         val expectedGasStations = multipleGasStationsWithinAFiveKilometersRadius()
         every { gasStationsPersister.queryNearGasStations(any(), GASOLINA_95_E5) } returns Result.success(expectedGasStations)
 
-        val gasStations = nearGasStation.execute(
+        val gasStations = retrieveNearGasStation.execute(
             someCoordinates(),
             MAXIMUM_DISTANCE_IN_METERS,
             GASOLINA_95_E5
@@ -49,7 +49,7 @@ class NearGasStationShould {
         every { gasStationsPersister.queryNearGasStations(any(), GASOLINA_95_E5) } returns Result.failure(RuntimeException())
 
         assertFailsWith<FailedToRetrieveNearGasStations> {
-            nearGasStation.execute(
+            retrieveNearGasStation.execute(
                 someCoordinates(),
                 MAXIMUM_DISTANCE_IN_METERS,
                 GASOLINA_95_E5
