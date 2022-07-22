@@ -10,8 +10,8 @@ import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
+import kotlin.test.assertFailsWith
 
 
 private const val EXPECTED_GAS_STATION_JSON = "/real-example-of-gas-stations-from-spanish-government.json"
@@ -29,17 +29,26 @@ class GasStationsRetrieverFromSpanishGovernmentShould {
     }
 
     @Test
-    fun deserializeToGasStationInfo() {
-        val file = javaClass.getResource(EXPECTED_GAS_STATION_JSON)?.readText()!!
-        every { requester.get(any()) }.returns(file)
+    fun `download gas stations info`() {
+        val expectedGasStation = javaClass.getResource(EXPECTED_GAS_STATION_JSON)?.readText()!!
+        every { requester.get(any()) }.returns(expectedGasStation)
         val gasStationsInfo = gasStationsRetriever.apply()
         assertEquals(aGasStation(), gasStationsInfo.getOrThrow())
+    }
+
+    @Test
+    fun `raise an error when malformed response`() {
+        every { requester.get(any()) }.returns("")
+
+        assertFailsWith<FailedToRetrieveGasStations> {
+            gasStationsRetriever.apply()
+        }
     }
 
     @Test
     fun `raise an error when failing to retrieve gas stations`() {
         every { requester.get(any()) }.throws(RuntimeException())
 
-        assertThrows<FailedToRetrieveGasStations> { gasStationsRetriever.apply() }
+        assertFailsWith<FailedToRetrieveGasStations> { gasStationsRetriever.apply() }
     }
 }

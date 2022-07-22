@@ -14,7 +14,7 @@ import java.io.IOException
 
 
 private const val GAS_STATIONS_SOURCE =
-    "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
+    "http://localhost:4545/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
 
 class GasStationsRetrieverFromSpanishGovernment(private val url: URLWrapper) : GasStationsRetriever {
     override fun apply() = runCatching {
