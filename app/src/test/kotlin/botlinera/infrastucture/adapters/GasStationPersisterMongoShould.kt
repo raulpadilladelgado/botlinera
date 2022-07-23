@@ -1,5 +1,7 @@
 package botlinera.infrastucture.adapters
 
+import botlinera.application.exceptions.FailedToReplaceGasStations
+import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.adapters.GasStationPersisterMongo
@@ -7,15 +9,21 @@ import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
+import io.mockk.every
+import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.litote.kmongo.KMongo
+import org.litote.kmongo.deleteMany
 import org.litote.kmongo.getCollectionOfName
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
-
+@ExtendWith(MockKExtension::class)
 class GasStationPersisterMongoShould() {
     private val mongoDBContainer: MongoDBContainer = MongoDBContainer(DockerImageName.parse("mongo:5.0.0"))
         .withExposedPorts(27017)
@@ -211,16 +219,20 @@ class GasStationPersisterMongoShould() {
         assertEquals("GasStation1", gasStations[1].name)
     }
 
-//
-//    @Test
-//    fun `raise an error if something fails`() {
-//        every {  }
-//
-//        assertFailsWith<FailedToReplaceGasStations> {
-//            gasStationPersisterMongo.replace(multipleGasStationsWithinAFiveKilometersRadius())
-//
-//        }
-//    }
+
+    @Test
+    fun `raise an error if something fails replacing gas stations`() {
+        collection = mockk()
+        gasStationPersisterMongo = GasStationPersisterMongo(collection)
+        every { collection.deleteMany("{}") } throws RuntimeException()
+
+        assertFailsWith<FailedToReplaceGasStations> {
+            val aguacate = gasStationPersisterMongo
+                .replace(multipleGasStationsWithinAFiveKilometersRadius())
+                .getOrThrow()
+            println(aguacate)
+        }
+    }
 
 }
 
