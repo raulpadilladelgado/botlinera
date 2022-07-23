@@ -26,14 +26,6 @@ class GasStationPersisterMongo(private val collection: MongoCollection<GasStatio
         throw FailedToReplaceGasStations(it)
     }
 
-    private fun removeGasStations() {
-        collection.deleteMany("{}")
-    }
-
-    private fun saveGasStations(gasStation: List<GasStation>) {
-        collection.insertMany(gasStation.map { GasStationDto.from(it) })
-    }
-
     override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType): Result<List<GasStation>> {
         val gasPriceToFilter: String = findGasPriceFilterToApplyBy(gasType)
         val query = Document(
@@ -50,6 +42,14 @@ class GasStationPersisterMongo(private val collection: MongoCollection<GasStatio
         val results = mutableListOf<GasStationDto>()
         collection.find(query).sort(gasPriceAscFilter).limit(MAX_GAS_STATIONS_TO_RETRIEVE).into(results)
         return Result.success(results.map { gasStationDto -> gasStationDto.toDomain() })
+    }
+
+    private fun removeGasStations() {
+        collection.deleteMany("{}")
+    }
+
+    private fun saveGasStations(gasStation: List<GasStation>) {
+        collection.insertMany(gasStation.map { GasStationDto.from(it) })
     }
 
     private fun findGasPriceFilterToApplyBy(gasType: GasType): String {
