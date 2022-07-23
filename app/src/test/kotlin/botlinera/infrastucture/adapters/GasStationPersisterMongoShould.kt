@@ -234,6 +234,11 @@ class GasStationPersisterMongoShould() {
         }
     }
 
+    @Test
+    fun `raise an error if something fails querying near gas stations`() {
+        TODO("Please, implement this test")
+    }
+
 }
 
 private fun gasStationDtos(): List<GasStationDto> = listOf(
