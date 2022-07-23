@@ -13,8 +13,8 @@ repositories {
 dependencies {
     implementation("org.litote.kmongo:kmongo:4.5.1")
     implementation("com.google.code.gson:gson:2.9.0")
-    implementation("org.mongodb:mongo-java-driver:3.12.11")
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
+    implementation("org.mongodb:mongodb-driver-core:4.7.0")
     testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.testcontainers:mongodb:1.17.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
