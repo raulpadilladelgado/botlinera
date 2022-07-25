@@ -1,5 +1,6 @@
 package botlinera.infrastucture.adapters
 
+import botlinera.application.exceptions.FailedToQueryNearGasStations
 import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
 import botlinera.domain.valueobject.GasType.*
@@ -12,6 +13,7 @@ import com.mongodb.client.MongoDatabase
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import org.bson.Document
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -20,6 +22,8 @@ import org.litote.kmongo.deleteMany
 import org.litote.kmongo.getCollectionOfName
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
+import java.lang.Double.NaN
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
@@ -221,22 +225,62 @@ class GasStationPersisterMongoShould() {
 
 
     @Test
-    fun `raise an error if something fails replacing gas stations`() {
+    fun `raise an error if something fails removing gas stations`() {
         collection = mockk()
         gasStationPersisterMongo = GasStationPersisterMongo(collection)
         every { collection.deleteMany("{}") } throws RuntimeException()
 
         assertFailsWith<FailedToReplaceGasStations> {
-            val aguacate = gasStationPersisterMongo
+            gasStationPersisterMongo
                 .replace(multipleGasStationsWithinAFiveKilometersRadius())
                 .getOrThrow()
-            println(aguacate)
+        }
+    }
+
+    @Test
+    fun `raise an error if something fails saving gas stations`() {
+        collection = mockk()
+        gasStationPersisterMongo = GasStationPersisterMongo(collection)
+        val gasStations = multipleGasStationsWithinAFiveKilometersRadius()
+        val gasStationsDto = gasStations.map { GasStationDto.from(it) }
+        every { collection.insertMany(gasStationsDto) } throws RuntimeException()
+
+        assertFailsWith<FailedToReplaceGasStations> {
+            gasStationPersisterMongo
+                .replace(gasStations)
+                .getOrThrow()
         }
     }
 
     @Test
     fun `raise an error if something fails querying near gas stations`() {
-        TODO("Please, implement this test")
+        collection = mockk()
+        gasStationPersisterMongo = GasStationPersisterMongo(collection)
+        val maximumSouthCoordinate = "4.997816135794025".toDouble()
+        val maximumNorthCoordinate = "50.087647664205974".toDouble()
+        val maximumWestCoordinate = "-18.762560744378813".toDouble()
+        val maximumEastCoordinate = "-1.56077985562119".toDouble()
+        val coordinates = MaximumCoordinates(
+            maximumSouthCoordinate,
+            maximumNorthCoordinate,
+            maximumWestCoordinate,
+            maximumEastCoordinate
+        )
+        val expectedQuery = Document(
+            "\$and", Arrays.asList(
+                Document("latitude", Document("\$gt", maximumSouthCoordinate)),
+                Document("latitude", Document("\$lt", maximumNorthCoordinate)),
+                Document("longitude", Document("\$gt", maximumWestCoordinate)),
+                Document("longitude", Document("\$lt", maximumEastCoordinate)),
+                Document("gas98E5Price", Document("\$ne", NaN)),
+            )
+        )
+        every { collection.find(expectedQuery) } throws RuntimeException()
+
+        assertFailsWith<FailedToQueryNearGasStations> {
+            gasStationPersisterMongo
+                .queryNearGasStations(coordinates)
+        }
     }
 
 }

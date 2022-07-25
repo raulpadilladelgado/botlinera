@@ -1,5 +1,6 @@
 package botlinera.infrastructure.adapters
 
+import botlinera.application.exceptions.FailedToQueryNearGasStations
 import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.application.ports.GasStationPersister
 import botlinera.domain.valueobject.GasStation
@@ -26,23 +27,29 @@ class GasStationPersisterMongo(private val collection: MongoCollection<GasStatio
         throw FailedToReplaceGasStations(it)
     }
 
-    override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType): Result<List<GasStation>> {
-        val gasPriceToFilter: String = findGasPriceFilterToApplyBy(gasType)
-        val query = Document(
-            "\$and", Arrays.asList(
-                Document("latitude", Document("\$gt", coordinates.maximumSouthCoordinate)),
-                Document("latitude", Document("\$lt", coordinates.maximumNorthCoordinate)),
-                Document("longitude", Document("\$gt", coordinates.maximumWestCoordinate)),
-                Document("longitude", Document("\$lt", coordinates.maximumEastCoordinate)),
-                Document(gasPriceToFilter, Document("\$ne", NaN)),
+    override fun queryNearGasStations(coordinates: MaximumCoordinates, gasType: GasType) =
+        runCatching {
+            val gasPriceToFilter: String = findGasPriceFilterToApplyBy(gasType)
+            val query = Document(
+                "\$and", Arrays.asList(
+                    Document("latitude", Document("\$gt", coordinates.maximumSouthCoordinate)),
+                    Document("latitude", Document("\$lt", coordinates.maximumNorthCoordinate)),
+                    Document("longitude", Document("\$gt", coordinates.maximumWestCoordinate)),
+                    Document("longitude", Document("\$lt", coordinates.maximumEastCoordinate)),
+                    Document(gasPriceToFilter, Document("\$ne", NaN)),
+                )
             )
-        )
 
-        val gasPriceAscFilter = Document(gasPriceToFilter, ASCENDANT_ORDER)
-        val results = mutableListOf<GasStationDto>()
-        collection.find(query).sort(gasPriceAscFilter).limit(MAX_GAS_STATIONS_TO_RETRIEVE).into(results)
-        return Result.success(results.map { gasStationDto -> gasStationDto.toDomain() })
-    }
+            val gasPriceAscFilter = Document(gasPriceToFilter, ASCENDANT_ORDER)
+            val results = mutableListOf<GasStationDto>()
+            collection.find(query)
+                .sort(gasPriceAscFilter)
+                .limit(MAX_GAS_STATIONS_TO_RETRIEVE)
+                .into(results)
+            results.map { gasStationDto -> gasStationDto.toDomain() }
+        }.onFailure {
+            throw FailedToQueryNearGasStations(it)
+        }
 
     private fun removeGasStations() {
         collection.deleteMany("{}")
