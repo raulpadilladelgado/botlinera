@@ -31,7 +31,7 @@ fun main() {
 }
 
 private fun mongoCollection(): MongoCollection<GasStationDto> {
-    val client: MongoClient = MongoClients.create(System.getenv("DATABASE_URL"))
+    val client: MongoClient = KMongo.createClient(System.getenv("DATABASE_URL"))
     val database: MongoDatabase = client.getDatabase("botlinera")
     return database.getCollectionOfName<GasStationDto>("gas_stations")
 }
