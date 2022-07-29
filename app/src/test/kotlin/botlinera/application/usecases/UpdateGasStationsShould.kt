@@ -42,7 +42,7 @@ class UpdateGasStationsShould {
     }
 
     @Test
-    fun `raise an error when something fails while`() {
+    fun `raise an error when something fails while retrieving gas stations`() {
         every { gasStationsRetriever.apply() }.returns(Result.failure(RuntimeException()))
 
         assertFailsWith<FailedToUpdateGasStation> { updateGasStations.execute() }
