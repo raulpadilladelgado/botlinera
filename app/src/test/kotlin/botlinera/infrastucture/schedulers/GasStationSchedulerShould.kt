@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class GasStationSchedulerShould {
     @Test
     fun updateGasStationsAtStartup() {
-        val fakeUpdateGasStations = mockk<UpdateGasStations>()
+        val fakeUpdateGasStations = mockk<UpdateGasStations>(relaxed = true)
 
         GasStationScheduler().start { fakeUpdateGasStations.execute() }
 

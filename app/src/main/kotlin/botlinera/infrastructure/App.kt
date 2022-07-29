@@ -4,14 +4,13 @@
 package botlinera.infrastructure
 
 import botlinera.application.usecases.UpdateGasStations
+import botlinera.infrastructure.adapters.GasStationPersisterMongo
 import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.bot.TelegramBot
+import botlinera.infrastructure.dtos.GasStationDto
 import botlinera.infrastructure.schedulers.GasStationScheduler
 import botlinera.infrastructure.utils.URLWrapper
-import botlinera.infrastructure.adapters.GasStationPersisterMongo
-import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
-import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import org.litote.kmongo.KMongo
@@ -31,7 +30,7 @@ fun main() {
 }
 
 private fun mongoCollection(): MongoCollection<GasStationDto> {
-    val client: MongoClient = MongoClients.create(System.getenv("DATABASE_URL"))
+    val client: MongoClient = KMongo.createClient(System.getenv("DATABASE_URL"))
     val database: MongoDatabase = client.getDatabase("botlinera")
     return database.getCollectionOfName<GasStationDto>("gas_stations")
 }

@@ -15,6 +15,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
     implementation("org.mongodb:mongodb-driver-core:4.7.0")
+    implementation("org.slf4j:slf4j-api:1.7.36")
+    implementation("org.slf4j:slf4j-simple:1.7.36")
     testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.testcontainers:mongodb:1.17.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
