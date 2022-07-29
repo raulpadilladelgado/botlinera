@@ -1,9 +1,9 @@
 package botlinera.domain.valueobject
 
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import kotlin.Double.Companion.NaN
-import kotlin.test.assertEquals
 
 class GasStationShould {
 

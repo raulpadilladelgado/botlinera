@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 
     application
@@ -11,21 +11,23 @@ repositories {
 }
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("com.google.guava:guava:30.1.1-jre")
     implementation("org.litote.kmongo:kmongo:4.5.1")
-    implementation("org.slf4j:slf4j-api:1.7.36")
-    implementation("org.slf4j:slf4j-simple:1.7.36")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
+    implementation("org.mongodb:mongodb-driver-core:4.7.0")
+    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("org.testcontainers:mongodb:1.17.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("org.assertj:assertj-core:3.21.0")
+    testImplementation("org.mockito:mockito-core:4.5.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("io.mockk:mockk:1.9.3")
-    testImplementation("org.mockito:mockito-core:4.4.0")
-    testImplementation("org.testcontainers:mongodb:1.16.3")
 }
 
 application {
     mainClass.set("botlinera.infrastructure.AppKt")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
