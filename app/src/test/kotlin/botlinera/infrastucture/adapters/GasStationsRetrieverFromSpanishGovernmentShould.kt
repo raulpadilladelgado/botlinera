@@ -46,7 +46,7 @@ class GasStationsRetrieverFromSpanishGovernmentShould {
     }
 
     @Test
-    fun `raise an error when failing to retrieve gas stations`() {
+    fun `raise an error when failing to download gas stations`() {
         every { requester.get(any()) }.throws(RuntimeException())
 
         assertFailsWith<FailedToRetrieveGasStations> { gasStationsRetriever.apply() }
