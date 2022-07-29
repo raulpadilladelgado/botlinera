@@ -23,6 +23,7 @@ data class GasStation(
 
     fun formatted() = buildString {
         append("⛽️ $name\n")
+        append("🌍 ${location.municipality}\n")
         append("🕐 ${location.time}")
         append(prices.formatted())
     }
