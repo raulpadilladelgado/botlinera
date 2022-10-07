@@ -4,7 +4,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 private const val INITIAL_DELAY = 0L
-private const val PERIOD = 4L
+private const val PERIOD = 2L
 
 class GasStationScheduler {
     fun start(job: () -> Unit) {
