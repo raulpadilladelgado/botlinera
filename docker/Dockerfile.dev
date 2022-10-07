@@ -1,0 +1,7 @@
+FROM --platform=linux/amd64 eclipse-temurin:17-jdk-alpine
+RUN mkdir /app
+COPY . /app
+WORKDIR /app
+COPY /app/build/libs/*.jar /app/botlinera.jar
+ENTRYPOINT java -jar /app/botlinera.jar
+

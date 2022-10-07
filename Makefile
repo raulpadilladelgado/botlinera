@@ -28,6 +28,7 @@ help:
 	echo "${MSG_IDENT}  ℹ️   To work with $(PROJECT_NAME) running alone in a container"
 	echo "${MSG_IDENT}  ⚠️   Requirements : docker \n"
 	echo "${MSG_IDENT}  up                      -  🚀  Start container"
+	echo "${MSG_IDENT}  build                   -  📦  Build package"
 	echo "${MSG_IDENT}  down                    -  🛑  Stop container"
 	echo "${MSG_IDENT}  restart                 -  ♻️   Rebuild the application and launch app"
 	echo "${MSG_IDENT}  logs                    -  📄  Show application logs"
@@ -53,6 +54,11 @@ up:
 	echo "\n\n${MSG_SEPARATOR}\n\n 🐳 up => 🚀  Start container \n\n${MSG_SEPARATOR}\n\n"
 
 	docker-compose -f docker/docker-compose.dev.yml up -d --build
+
+jar:
+	echo "\n\n${MSG_SEPARATOR}\n\n 📦 build => 🚀  Build package \n\n${MSG_SEPARATOR}\n\n"
+
+	./gradlew shadowJar
 
 down:
 	echo "\n\n${MSG_SEPARATOR}\n\n 🐳 down => 🚀  Stop container \n\n${MSG_SEPARATOR}\n\n"
