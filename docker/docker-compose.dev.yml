@@ -9,7 +9,7 @@ services:
     container_name: botlinera
     build:
       context: ../
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./docker/Dockerfile.dev
     env_file:
       - ../.env
     depends_on:
@@ -17,12 +17,12 @@ services:
         condition: service_healthy
 
   db:
-    image: mongo
+    image: mongo:6.0.2
     ports:
       - "27017:27017"
     container_name: botlinera_db
     healthcheck:
-      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u user -p password --quiet | grep 1
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u user -p password --quiet | grep 1
       interval: 10s
       timeout: 10s
       retries: 3
