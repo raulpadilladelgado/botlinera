@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    kotlinCompilerClasspath("com.github.ben-manes:gradle-versions-plugin:0.25.0")
     implementation("org.litote.kmongo:kmongo:4.5.1")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
