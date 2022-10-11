@@ -1,6 +1,6 @@
 name: Check Dependencies
 
-on: pull-request
+on: pull_request
 jobs:
   gradle:
     runs-on: ubuntu-latest
