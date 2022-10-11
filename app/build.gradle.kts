@@ -1,8 +1,6 @@
 plugins {
     kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("com.github.ben-manes.versions") version "0.25.0"
-
     application
 }
 
@@ -12,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    kotlinCompilerClasspath("com.github.ben-manes:gradle-versions-plugin:0.25.0")
     implementation("org.litote.kmongo:kmongo:4.5.1")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
