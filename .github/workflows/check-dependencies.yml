@@ -14,7 +14,7 @@ jobs:
       - uses: MeilCli/gradle-update-check-action@v3
         id: outdated
         with:
-          build_gradle_files: source-code/infrastructure/build.gradle
+          build_gradle_files: app/build.gradle.kts
       - uses: github-actions-up-and-running/pr-comment@v1.0.0
         if: steps.outdated.outputs.has_maven_update != 'false'
         with:
