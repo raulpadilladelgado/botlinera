@@ -13,3 +13,5 @@ jobs:
         run: chmod +x gradlew
       - uses: MeilCli/gradle-update-check-action@v3
         id: outdated
+        with:
+          build_gradle_files: app/build.gradle.kts
