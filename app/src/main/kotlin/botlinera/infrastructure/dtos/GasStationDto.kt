@@ -31,7 +31,7 @@ data class GasStationDto(
             Coordinates(latitude, longitude),
             municipality,
             province,
-            locality
+            formattedLocality(locality)
         ),
         Prices(
             Gas95(gas95E10Price, gas95E5Price, gas95E5PremiumPrice),
@@ -39,6 +39,10 @@ data class GasStationDto(
             Gasoil(gasoilA, gasoilB, gasoilPremium)
         )
     )
+
+    private fun formattedLocality(locality: String): String {
+        return locality
+    }
 
     companion object {
         fun from(gasStation: GasStation) = GasStationDto(
