@@ -11,7 +11,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.litote.kmongo:kmongo:4.5.1")
+    api("org.slf4j:slf4j-api:1.7.36")
+    implementation("org.litote.kmongo:kmongo:4.7.1")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram:6.0.7")
     implementation("org.mongodb:mongodb-driver-core:4.7.0")

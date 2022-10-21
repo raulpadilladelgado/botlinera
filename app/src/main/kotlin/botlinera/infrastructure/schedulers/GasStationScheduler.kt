@@ -4,7 +4,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 private const val INITIAL_DELAY = 0L
-private const val PERIOD = 2L
+private const val PERIOD = 30L
 
 class GasStationScheduler {
     fun start(job: () -> Unit) {
@@ -12,7 +12,7 @@ class GasStationScheduler {
         executorService.scheduleAtFixedRate(
             {
                 job()
-            }, INITIAL_DELAY, PERIOD, TimeUnit.HOURS
+            }, INITIAL_DELAY, PERIOD, TimeUnit.MINUTES
         )
     }
 }
