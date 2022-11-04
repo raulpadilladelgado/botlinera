@@ -25,6 +25,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:4.5.1")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
 }
 
 application {
