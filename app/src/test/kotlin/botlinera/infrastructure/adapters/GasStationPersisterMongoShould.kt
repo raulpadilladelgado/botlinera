@@ -1,11 +1,10 @@
-package botlinera.infrastucture.adapters
+package botlinera.infrastructure.adapters
 
 import botlinera.application.exceptions.FailedToQueryNearGasStations
 import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
-import botlinera.infrastructure.adapters.GasStationPersisterMongo
 import botlinera.infrastructure.dtos.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
