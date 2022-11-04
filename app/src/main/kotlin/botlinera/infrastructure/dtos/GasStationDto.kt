@@ -3,6 +3,7 @@ package botlinera.infrastructure.dtos
 import botlinera.domain.valueobject.*
 import com.google.gson.annotations.SerializedName
 import java.util.*
+import java.util.Locale.*
 import java.util.regex.Pattern
 
 private const val ARTICLES_REGEX = "(.*)\\s\\((OS|A|OS|A|O|LAS|AS|LA|LES|LOS|S'|EL|L'|ELS|SES|ES|SA)\\)(.*)?|(.*)"
@@ -44,11 +45,12 @@ data class GasStationDto(
         )
     )
 
+
     companion object {
         private fun capitalize(text: String): String {
             val capitalizedText = StringBuffer()
             val matcher = Pattern.compile("\\b(\\w)").matcher(text)
-            while (matcher.find()) matcher.appendReplacement(capitalizedText, matcher.group(1).uppercase(Locale.getDefault()))
+            while (matcher.find()) matcher.appendReplacement(capitalizedText, matcher.group(1).uppercase(getDefault()))
             matcher.appendTail(capitalizedText)
             return capitalizedText.toString()
         }
@@ -59,7 +61,7 @@ data class GasStationDto(
                     .matcher(locality)
                     .replaceAll("$4$2 $1$3")
                     .trim()
-                    .lowercase(Locale.getDefault())
+                    .lowercase(getDefault())
             )
         }
 
