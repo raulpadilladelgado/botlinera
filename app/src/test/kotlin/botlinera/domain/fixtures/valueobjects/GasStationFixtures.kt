@@ -126,7 +126,7 @@ class GasStationFixtures {
                     Coordinates(39.211417,-1.539167 ),
                     "Abengibre",
                     "ALBACETE",
-                    "ABENGIBRE",
+                    "Abengibre",
                 ),
                 Prices(Gas95(NaN, 1.759, NaN), Gas98(NaN, NaN), Gasoil(1.779, 1.270, NaN))
             )
