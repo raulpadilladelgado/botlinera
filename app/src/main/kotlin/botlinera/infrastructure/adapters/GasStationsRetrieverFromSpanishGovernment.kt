@@ -3,8 +3,7 @@ package botlinera.infrastructure.adapters
 import botlinera.application.exceptions.FailedToRetrieveGasStations
 import botlinera.application.ports.GasStationsRetriever
 import botlinera.domain.valueobject.GasStation
-import botlinera.infrastructure.dtos.GasStationDto
-import botlinera.infrastructure.dtos.RetrieverResponseDto
+import botlinera.infrastructure.dtos.`in`.RetrieverResponseDto
 import botlinera.infrastructure.utils.URLWrapper
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter

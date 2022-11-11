@@ -1,5 +1,6 @@
 package botlinera.infrastructure.dtos
 
+import botlinera.infrastructure.dtos.`in`.GasStationDto
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import kotlin.test.assertEquals

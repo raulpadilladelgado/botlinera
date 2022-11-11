@@ -7,7 +7,7 @@ import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
-import botlinera.infrastructure.dtos.GasStationDto
+import botlinera.infrastructure.dtos.out.GasStationDto
 import com.mongodb.client.MongoCollection
 import org.bson.Document
 import org.litote.kmongo.deleteMany

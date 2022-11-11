@@ -6,7 +6,7 @@ import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType
 import botlinera.domain.valueobject.GasType.*
 import botlinera.infrastructure.adapters.GasStationPersisterMongo
-import botlinera.infrastructure.dtos.GasStationDto
+import botlinera.infrastructure.dtos.`out`.GasStationDto
 import botlinera.infrastructure.utils.BotMessages.Companion.chooseGas
 import botlinera.infrastructure.utils.BotMessages.Companion.contactMessage
 import botlinera.infrastructure.utils.BotMessages.Companion.findCheapestGasStationsButtonText
@@ -144,7 +144,6 @@ class TelegramBot {
             longitude,
             gasType = gasType
         )
-
         if (nearGasStations.isEmpty()) {
             bot.sendMessage(
                 fromId(message.chat.id),

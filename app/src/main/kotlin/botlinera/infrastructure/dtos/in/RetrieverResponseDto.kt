@@ -1,4 +1,4 @@
-package botlinera.infrastructure.dtos
+package botlinera.infrastructure.dtos.`in`
 
 import com.google.gson.annotations.SerializedName
 

@@ -5,7 +5,7 @@ import botlinera.application.exceptions.FailedToReplaceGasStations
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
-import botlinera.infrastructure.dtos.GasStationDto
+import botlinera.infrastructure.dtos.`out`.GasStationDto
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
@@ -22,6 +22,7 @@ import org.litote.kmongo.getCollectionOfName
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
 import java.lang.Double.NaN
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -302,7 +303,8 @@ private fun gasStationDtos(): List<GasStationDto> = listOf(
         "GasStation1",
         1.20,
         1.10,
-        1.20
+        1.20,
+        LocalDateTime.of(2022, 1, 1, 11, 0,0)
     ),
     GasStationDto(
         "38660",
@@ -321,7 +323,8 @@ private fun gasStationDtos(): List<GasStationDto> = listOf(
         "GasStation2",
         Double.NaN,
         Double.NaN,
-        Double.NaN
+        Double.NaN,
+        LocalDateTime.of(2022, 1, 1, 11, 0,0)
     ), GasStationDto(
         "38660",
         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
@@ -339,7 +342,8 @@ private fun gasStationDtos(): List<GasStationDto> = listOf(
         "GasStation3",
         Double.NaN,
         Double.NaN,
-        Double.NaN
+        Double.NaN,
+        LocalDateTime.of(2022, 1, 1, 11, 0,0)
     ), GasStationDto(
         "38660",
         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
@@ -357,7 +361,8 @@ private fun gasStationDtos(): List<GasStationDto> = listOf(
         "GasStation4",
         1.30,
         Double.NaN,
-        Double.NaN
+        Double.NaN,
+        LocalDateTime.of(2022, 1, 1, 11, 0,0)
     ), GasStationDto(
         "38660",
         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
@@ -375,7 +380,8 @@ private fun gasStationDtos(): List<GasStationDto> = listOf(
         "GasStation5",
         Double.NaN,
         Double.NaN,
-        Double.NaN
+        Double.NaN,
+        LocalDateTime.of(2022, 1, 1, 11, 0,0)
     ), GasStationDto(
         "38660",
         "URBANIZACIÓN SAN EUGENIO, PLAYA DE LAS AMERICAS",
@@ -393,6 +399,7 @@ private fun gasStationDtos(): List<GasStationDto> = listOf(
         "GasStation6",
         1.10,
         1.20,
-        1.10
+        1.10,
+        LocalDateTime.of(2022, 1, 1, 11, 0,0)
     )
 )
