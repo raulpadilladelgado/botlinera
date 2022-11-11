@@ -18,7 +18,8 @@ class GasStationShould {
 
         val expectedFormattedMessage = """
             ⛽️ GasStation1
-            🌍 Adeje
+            📍 Adeje
+            🏡 Adeje
             🕐 L-D: 08:00-17:30
             💶 Precio Gasolina
              - 95 E5: 1.538€
@@ -46,7 +47,8 @@ class GasStationShould {
 
         val expectedFormattedMessage = """
             ⛽️ GasStation1
-            🌍 Adeje
+            📍 Adeje
+            🏡 Adeje
             🕐 L-D: 08:00-17:30
             💶 Precio Gasolina
              - 95 E10: 1.879€

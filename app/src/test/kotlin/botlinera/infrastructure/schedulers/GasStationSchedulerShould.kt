@@ -1,7 +1,6 @@
-package botlinera.infrastucture.schedulers
+package botlinera.infrastructure.schedulers
 
 import botlinera.application.usecases.UpdateGasStations
-import botlinera.infrastructure.schedulers.GasStationScheduler
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test

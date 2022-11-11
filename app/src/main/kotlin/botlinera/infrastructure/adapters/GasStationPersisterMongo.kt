@@ -20,9 +20,9 @@ private const val MAX_GAS_STATIONS_TO_RETRIEVE = 3
 
 class GasStationPersisterMongo(private val collection: MongoCollection<GasStationDto>) : GasStationPersister {
 
-    override fun replace(gasStationDto: List<GasStation>) = runCatching {
+    override fun replace(gasStation: List<GasStation>) = runCatching {
         removeGasStations()
-        saveGasStations(gasStationDto)
+        saveGasStations(gasStation)
     }.onFailure {
         throw FailedToReplaceGasStations(it)
     }

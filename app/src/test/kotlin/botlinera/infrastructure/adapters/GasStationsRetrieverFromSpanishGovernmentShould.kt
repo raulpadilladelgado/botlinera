@@ -1,8 +1,7 @@
-package botlinera.infrastucture.adapters
+package botlinera.infrastructure.adapters
 
 import botlinera.application.exceptions.FailedToRetrieveGasStations
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.aGasStation
-import botlinera.infrastructure.adapters.GasStationsRetrieverFromSpanishGovernment
 import botlinera.infrastructure.utils.URLWrapper
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
