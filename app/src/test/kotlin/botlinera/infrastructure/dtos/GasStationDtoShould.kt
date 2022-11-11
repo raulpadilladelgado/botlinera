@@ -24,7 +24,8 @@ class GasStationDtoShould {
             "LOCALIDAD (ELS),Els Localidad",
             "LOCALIDAD (SES),Ses Localidad",
             "LOCALIDAD (ES),Es Localidad",
-            "LOCALIDAD (SA),Sa Localidad"
+            "LOCALIDAD (SA),Sa Localidad",
+            "LOCALIDAD(LA),La Localidad"
         ]
     )
     fun `format locality to be more humanly legible`(locality: String, expectedFormattedLocality: String) {

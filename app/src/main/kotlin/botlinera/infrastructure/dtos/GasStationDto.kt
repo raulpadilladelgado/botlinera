@@ -6,7 +6,7 @@ import java.util.*
 import java.util.Locale.*
 import java.util.regex.Pattern
 
-private const val ARTICLES_REGEX = "(.*)\\s\\((OS|A|OS|A|O|LAS|AS|LA|LES|LOS|S'|EL|L'|ELS|SES|ES|SA)\\)(.*)?|(.*)"
+private const val ARTICLES_REGEX = "(.*)\\s?\\((OS|A|OS|A|O|LAS|AS|LA|LES|LOS|S'|EL|L'|ELS|SES|ES|SA)\\)(.*)?|(.*)"
 
 data class GasStationDto(
     @SerializedName("C.P.") val postalCode: String,
@@ -47,24 +47,6 @@ data class GasStationDto(
 
 
     companion object {
-        private fun capitalize(text: String): String {
-            val capitalizedText = StringBuffer()
-            val matcher = Pattern.compile("\\b(\\w)").matcher(text)
-            while (matcher.find()) matcher.appendReplacement(capitalizedText, matcher.group(1).uppercase(getDefault()))
-            matcher.appendTail(capitalizedText)
-            return capitalizedText.toString()
-        }
-
-        internal fun formattedLocality(locality: String): String {
-            return capitalize(
-                Pattern.compile(ARTICLES_REGEX)
-                    .matcher(locality)
-                    .replaceAll("$4$2 $1$3")
-                    .trim()
-                    .lowercase(getDefault())
-            )
-        }
-
         fun from(gasStation: GasStation) = GasStationDto(
             gasStation.postalCode(),
             gasStation.address(),
@@ -84,5 +66,28 @@ data class GasStationDto(
             gasStation.prices.gasoil.b,
             gasStation.prices.gasoil.premium
         )
+
+        internal fun formattedLocality(locality: String): String {
+            return capitalize(
+                Pattern.compile(ARTICLES_REGEX)
+                    .matcher(locality)
+                    .replaceAll("$4$2 $1$3")
+                    .trim()
+                    .lowercase(getDefault())
+                    .removeExtraSpaces()
+            )
+        }
+
+        private fun capitalize(text: String): String {
+            val capitalizedText = StringBuffer()
+            val matcher = Pattern.compile("\\b(\\w)").matcher(text)
+            while (matcher.find()) matcher.appendReplacement(capitalizedText, matcher.group(1).uppercase(getDefault()))
+            matcher.appendTail(capitalizedText)
+            return capitalizedText.toString()
+        }
+
+        private fun CharSequence.removeExtraSpaces(): String {
+            return replace("\\s+".toRegex(), " ")
+        }
     }
 }
