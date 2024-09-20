@@ -15,17 +15,20 @@ import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollectionOfName
+import java.util.concurrent.TimeUnit.MINUTES
 
+private const val INITIAL_DELAY = 0L
+private const val PERIOD = 30L
 
 fun main() {
     val gasStationPersister = GasStationPersisterMongo(mongoCollection())
 
-    GasStationScheduler().start {
+    GasStationScheduler.start({
         UpdateGasStations(
             GasStationsRetrieverFromSpanishGovernment(URLWrapper()),
             gasStationPersister
         ).execute()
-    }
+    }, INITIAL_DELAY, PERIOD, MINUTES)
     TelegramBot().startPolling()
 }
 

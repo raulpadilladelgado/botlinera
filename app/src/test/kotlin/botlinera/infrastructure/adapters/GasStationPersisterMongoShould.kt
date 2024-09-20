@@ -2,7 +2,9 @@ package botlinera.infrastructure.adapters
 
 import botlinera.application.exceptions.FailedToQueryNearGasStations
 import botlinera.application.exceptions.FailedToReplaceGasStations
+import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.aGasStation
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
+import botlinera.domain.valueobject.GasStation
 import botlinera.domain.valueobject.GasType.*
 import botlinera.domain.valueobject.MaximumCoordinates
 import botlinera.infrastructure.dtos.GasStationDto
@@ -282,6 +284,28 @@ class GasStationPersisterMongoShould() {
         }
     }
 
+    @Test
+    fun `Replace all gas stations with new ones`() {
+        val gasStation = aGasStation()
+        gasStationPersisterMongo
+            .replace(gasStation)
+
+        val replacedResult = mutableListOf<GasStationDto>()
+        collection.find().into(replacedResult)
+        assertEquals(1, replacedResult.size)
+        assertEquals(gasStation[0].name, replacedResult[0].name)
+    }
+
+    @Test
+    fun `Replace all gas stations with no one given an empty list of gas stations`() {
+        val gasStation = listOf<GasStation>()
+        gasStationPersisterMongo
+            .replace(gasStation)
+
+        val replacedResult = mutableListOf<GasStationDto>()
+        collection.find().into(replacedResult)
+        assertEquals(0, replacedResult.size)
+    }
 }
 
 private fun gasStationDtos(): List<GasStationDto> = listOf(

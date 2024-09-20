@@ -56,6 +56,9 @@ class GasStationPersisterMongo(private val collection: MongoCollection<GasStatio
     }
 
     private fun saveGasStations(gasStation: List<GasStation>) {
+        if (gasStation.isEmpty()) {
+            return
+        }
         collection.insertMany(gasStation.map { GasStationDto.from(it) })
     }
 

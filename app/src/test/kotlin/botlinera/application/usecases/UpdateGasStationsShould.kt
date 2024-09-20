@@ -6,10 +6,12 @@ import botlinera.application.exceptions.FailedToUpdateGasStation
 import botlinera.application.ports.GasStationPersister
 import botlinera.application.ports.GasStationsRetriever
 import botlinera.domain.fixtures.valueobjects.GasStationFixtures.Companion.multipleGasStationsWithinAFiveKilometersRadius
+import io.mockk.Called
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import io.mockk.verifyOrder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -46,6 +48,17 @@ class UpdateGasStationsShould {
         every { gasStationsRetriever.apply() }.returns(Result.failure(RuntimeException()))
 
         assertFailsWith<FailedToUpdateGasStation> { updateGasStations.execute() }
+    }
+
+    @Test
+    fun `not replace all gas stations when retrieving empty list of gas stations`() {
+        every { gasStationsRetriever.apply() }.returns(Result.success(listOf()))
+
+        updateGasStations.execute()
+
+        verify {
+            gasStationsPersister wasNot Called
+        }
     }
 
 

@@ -17,6 +17,11 @@ class UpdateGasStations(
 
     fun execute() = runCatching {
         val gasStations: List<GasStation> = gasStationsRetriever.apply().getOrThrow()
+
+        if (gasStations.isEmpty()) {
+            LOG.info("Gas stations were not found")
+            return Result.success(Unit)
+        }
         gasStationPersister.replace(gasStations).getOrThrow()
         LOG.info("Gas stations were updated in database")
     }.onFailure {
